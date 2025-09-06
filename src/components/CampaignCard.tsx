@@ -44,7 +44,7 @@ const CampaignCard: React.FC = () => {
       </div>
 
       {/* Card Content */}
-      <div className="card-container bg-white shadow-lg mx-auto border-2 border-cj-blue print:shadow-none print:border-none">
+      <div className="card-container bg-white shadow-lg mx-auto border-2 border-cj-blue print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
         {showFront ? (
           /* Front Side */
           <div className="card-side p-4">
@@ -145,6 +145,74 @@ const CampaignCard: React.FC = () => {
           <p>4. Or use a duplex printer for automatic double-sided printing</p>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media print {
+            .card-container {
+              box-shadow: none !important;
+              margin: 0 !important;
+              border: none !important;
+              max-width: none !important;
+            }
+
+            .card-side {
+              width: 5in !important;
+              min-height: 7in !important;
+              padding: 0.4in !important;
+              box-sizing: border-box !important;
+              margin: 0 auto !important;
+              page-break-inside: avoid !important;
+            }
+
+            .card-header,
+            .card-main,
+            .card-footer,
+            .back-header,
+            .message-section,
+            .back-footer {
+              page-break-inside: avoid !important;
+            }
+
+            button, .card-controls, .print-instructions {
+              display: none !important;
+            }
+
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
+            @page {
+              size: 5in 7in;
+              margin: 0.25in;
+            }
+          }
+
+          @media (max-width: 768px) {
+            .card-container {
+              max-width: 100% !important;
+              padding: 1rem !important;
+            }
+
+            .card-side {
+              width: 100% !important;
+              min-height: auto !important;
+              padding: 1rem !important;
+            }
+
+            .hero-section {
+              flex-direction: column !important;
+              text-align: center !important;
+            }
+
+            .cj-photo {
+              margin-right: 0 !important;
+              margin-bottom: 1rem !important;
+            }
+          }
+        `
+      }} />
     </div>
   );
 };

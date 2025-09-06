@@ -21,8 +21,8 @@ const CampaignFlyer: React.FC = () => {
       </div>
 
       {/* Flyer Content */}
-      <div className="flyer-container bg-white shadow-lg mx-auto print:shadow-none">
-        <div className="flyer-content border-2 border-cj-blue print:border-none print:shadow-none">
+      <div className="flyer-container bg-white shadow-lg mx-auto print:shadow-none" style={{maxWidth: '8.5in'}}>
+        <div className="flyer-content print:border-none print:shadow-none" style={{width: '8.5in', minHeight: '11in', padding: '0.5in', boxSizing: 'border-box', margin: '0 auto'}}>
           {/* Header */}
           <div className="flyer-header text-center mb-8">
             <div className="flag-stripes flex h-5 mb-5">
@@ -101,6 +101,81 @@ const CampaignFlyer: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media print {
+            .flyer-container {
+              box-shadow: none !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              max-width: none !important;
+            }
+
+            .flyer-content {
+              border: none !important;
+              box-shadow: none !important;
+              width: 8.5in !important;
+              min-height: 11in !important;
+              padding: 0.5in !important;
+              box-sizing: border-box !important;
+              margin: 0 auto !important;
+              page-break-inside: avoid !important;
+            }
+
+            .flyer-header,
+            .flyer-main,
+            .flyer-footer {
+              page-break-inside: avoid !important;
+            }
+
+            button, .print-controls {
+              display: none !important;
+            }
+
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
+            @page {
+              size: 8.5in 11in;
+              margin: 0.25in;
+            }
+          }
+
+          @media (max-width: 1024px) {
+            .flyer-container {
+              max-width: 100% !important;
+              padding: 1rem !important;
+            }
+
+            .flyer-content {
+              width: 100% !important;
+              min-height: auto !important;
+              padding: 1rem !important;
+            }
+
+            .hero-section {
+              flex-direction: column !important;
+              text-align: center !important;
+            }
+
+            .cj-photo {
+              margin-right: 0 !important;
+              margin-bottom: 1rem !important;
+            }
+
+            .flyer-title {
+              font-size: 2.5rem !important;
+            }
+
+            .flyer-subtitle {
+              font-size: 1.5rem !important;
+            }
+          }
+        `
+      }} />
     </div>
   );
 };
