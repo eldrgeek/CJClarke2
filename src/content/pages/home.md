@@ -2,7 +2,7 @@
 type: "page"
 slug: "/"
 title: "A Healthier, Safer Sheridan"
-summary: "Local small‑business owner, youth mentor, and neighbor — ready to deliver practical results on council."
+summary: "U.S. Army veteran and world champion athlete Christophe James Clarke brings practical leadership to City Council."
 hero:
   image: "https://images.pexels.com/photos/5935794/pexels-photo-5935794.jpeg"
   alt: "CJ Clarke speaking with Sheridan neighbors at a community event"
@@ -14,11 +14,11 @@ cta:
     label: "Volunteer" 
     href: "/get-involved"
 seo:
-  description: "CJ Clarke for Sheridan City Council: safer streets, youth programs, and support for small businesses."
+  description: "CJ Clarke for Sheridan City Council: U.S. Army veteran, world champion athlete, and dedicated community leader fighting for safer streets, thriving businesses, and youth opportunities."
 schema:
   type: "Person"
   data:
-    name: "Chris (CJ) Clarke"
+    name: "Christophe James Clarke"
     jobTitle: "Candidate for Sheridan City Council"
     url: "https://example.org/"
     sameAs: []
@@ -26,11 +26,20 @@ schema:
 
 **A Healthier, Safer Sheridan**
 
-Chris "CJ" Clarke is a local small‑business owner, world‑class martial‑arts instructor, and youth mentor. He's running for City Council to bring practical, community‑first leadership to City Hall.
+Christophe James Clarke is a U.S. Army veteran, three-time national gold medalist, and dedicated Sheridan community leader. With over 15 years serving our community through his business [Chi Life Movement](https://chilifemovement.com) and current roles on the Planning & Zoning Commission and Sheridan Celebrates Committee, CJ brings global experience and local commitment to City Council.
+
+### Why CJ Clarke?
+
+- **Proven Leader**: U.S. Army veteran, world champion athlete, and successful business owner
+- **Community Champion**: Planning & Zoning Commissioner (Business Representative) and active civic leader
+- **Results-Focused**: Practical solutions with measurable outcomes for all Sheridan residents
 
 ### Our Priorities
-- **Support small businesses & safe streets.** Help local entrepreneurs thrive while making it safer to walk, bike, and drive.
-- **Invest in youth programs & parks.** Expand after‑school options, scholarships, and recreation.
-- **Common‑sense budgeting & transparency.** Focus on essentials, measure results, and communicate clearly.
+- **Safe Streets & Infrastructure**: Champion the Safe Streets Through Sheridan plan and improve Federal Boulevard safety
+- **Housing Affordability**: Support ADUs, Bonsai Flats project, and inclusive housing solutions
+- **Economic Development**: Build on River Point success while supporting local entrepreneurs
+- **Youth & Senior Programs**: Expand opportunities through parks, recreation, and community services
+- **Environmental Sustainability**: Clean up brownfields and implement Sheridan's sustainability plan
+- **Transparent Governance**: Regular community updates, accessible meetings, and clear communication
 
-**Get to know CJ on the [Meet Chris](/meet) page** or read about his [plan for Sheridan](/issues). Ready to help? **[Volunteer](/get-involved)** or **[Donate](/donate)** today.
+**Learn about CJ's remarkable journey on the [Meet CJ](/meet) page** or explore his [specific plans for Sheridan](/issues). Ready to help build a healthier, safer Sheridan? **[Volunteer](/get-involved)** or **[Donate](/donate)** today.

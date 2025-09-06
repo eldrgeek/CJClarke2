@@ -23,7 +23,7 @@ const CTAButtons: React.FC<CTAButtonsProps> = ({ primary, secondary }) => {
       {primary && (
         <button
           onClick={() => handleClick(primary.href)}
-          className="inline-flex items-center justify-center px-8 py-4 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+          className="inline-flex items-center justify-center px-8 py-4 bg-cj-red text-cj-white font-semibold rounded-full hover:bg-cj-red/90 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
         >
           <Heart className="w-5 h-5 mr-2" />
           {primary.label}

@@ -8,7 +8,7 @@ import NewsCard from './components/NewsCard';
 import SEO from './components/SEO';
 import { loadSite, resolveRoute } from './lib/content';
 import type { SiteIndex, RouteResult } from './types';
-import { ArrowLeft, Users, Target, Heart, Shield, Building2, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Users, Target, Heart, Building2, CheckCircle2 } from 'lucide-react';
 
 function App() {
   const [site, setSite] = useState<SiteIndex | null>(null);

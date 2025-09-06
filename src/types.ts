@@ -12,7 +12,7 @@ export interface BaseFrontmatter {
     secondary?: { label: string; href: string };
   };
   seo?: { title?: string; description?: string; image?: string };
-  schema?: { type?: string; data?: Record<string, any> };
+  schema?: { type?: string; data?: Record<string, unknown> };
 }
 
 export interface IssueFrontmatter extends BaseFrontmatter {

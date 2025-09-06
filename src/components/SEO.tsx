@@ -66,7 +66,7 @@ const SEO: React.FC<SEOProps> = ({ frontmatter, baseUrl = 'https://example.org' 
 
     // Add structured data for Person schema
     if (frontmatter.schema?.type === 'Person') {
-      let scriptTag = document.querySelector('script[type="application/ld+json"]');
+      const scriptTag = document.querySelector('script[type="application/ld+json"]');
       if (scriptTag) {
         scriptTag.remove();
       }

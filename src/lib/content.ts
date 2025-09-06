@@ -1,14 +1,12 @@
 import { marked } from 'marked';
 import matter from 'gray-matter';
-import { format } from 'date-fns';
-import type { 
-  SiteIndex, 
-  PageDoc, 
-  BaseFrontmatter, 
-  IssueFrontmatter, 
+import type {
+  SiteIndex,
+  PageDoc,
+  BaseFrontmatter,
+  IssueFrontmatter,
   NewsFrontmatter,
-  LoadOptions,
-  RouteResult 
+  RouteResult
 } from '../types';
 
 // Configure marked with heading IDs
@@ -22,7 +20,7 @@ marked.setOptions({
 // Add heading ID renderer
 marked.use({
   renderer: {
-    heading(token: any) {
+    heading(token: { depth: number; tokens: unknown[] }) {
       const level = token.depth;
       const text = this.parser.parseInline(token.tokens);
       const anchor = text
@@ -72,7 +70,7 @@ async function loadContentFiles(): Promise<{ [key: string]: string }> {
   return contentFiles;
 }
 
-export async function loadSite(opts: LoadOptions = {}): Promise<SiteIndex> {
+export async function loadSite(): Promise<SiteIndex> {
   const pagesBySlug: Record<string, PageDoc<BaseFrontmatter>> = {};
   const issues: PageDoc<IssueFrontmatter>[] = [];
   const news: PageDoc<NewsFrontmatter>[] = [];

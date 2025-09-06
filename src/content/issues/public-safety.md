@@ -3,28 +3,37 @@ type: "issue"
 slug: "public-safety"
 title: "Public Safety & Safe Streets"
 priority: 1
-summary: "Practical, community‑oriented safety: better lighting, traffic calming near schools, and coordination with regional partners."
+summary: "Champion the Safe Streets Through Sheridan plan, improve Federal Boulevard safety, and coordinate with regional partners."
 hero:
   image: "https://images.pexels.com/photos/136413/pexels-photo-136413.jpeg"
   alt: "A Sheridan crosswalk near a school"
 seo:
-  description: "CJ Clarke will improve neighborhood safety with targeted traffic calming, safer crossings, and community partnerships."
+  description: "CJ Clarke will champion the Safe Streets Through Sheridan plan and improve Federal Boulevard safety with targeted traffic calming and community partnerships."
 ---
 
 ## Public Safety & Safe Streets
 
-Everyone should feel safe walking, biking, or driving in Sheridan. CJ's approach is practical and community‑oriented.
+Sheridan's Safe Streets Through Sheridan plan provides a roadmap for making our community safer for everyone. CJ will champion this initiative while addressing immediate safety concerns on our busiest corridors.
 
-### Targeted Traffic Calming {#traffic-calming}
-- Work with neighborhoods to identify dangerous corridors near schools and parks.
-- Use low‑cost tools like paint, signage, and flexible bollards to slow speeds.
+### Safe Streets Through Sheridan Plan {#safe-streets}
+- **Federal Boulevard Improvements**: Address congestion and dangerous intersections through the federally-funded planning grant
+- **Pedestrian & Cyclist Safety**: Coordinate land use and transportation to improve safety for all users
+- **Traffic Calming Measures**: Implement low-cost solutions like paint, signage, and flexible bollards near schools and parks
 
-### Safer Crossings & Lighting {#crossings-lighting}
-- Improve crosswalk visibility with daylighting, lighting, and curb extensions.
-- Prioritize quick‑build solutions while planning permanent upgrades.
+### Targeted Safety Improvements {#targeted-safety}
+- **School Zone Safety**: Work with neighborhoods to identify and fix dangerous corridors near schools
+- **Crosswalk Enhancements**: Improve visibility with daylighting, lighting, and curb extensions
+- **Senior & Youth Protection**: Focus on safe crossings for our most vulnerable residents
 
-### Coordination with Regional Partners {#regional}
-- Collaborate with county and state partners on high‑injury corridors.
-- Pursue grants to fund safety improvements.
+### Regional Coordination {#regional-coordination}
+- **County & State Partnerships**: Collaborate on high-injury corridors and regional safety initiatives
+- **Hampden Avenue Study**: Implement recommendations from the mobility and safety study
+- **South Santa Fe Drive**: Address transportation challenges through the comprehensive planning process
+- **Grant Opportunities**: Pursue federal and state funding for safety improvements
 
-**Related:** [Accountability & Budget Transparency](/issues/accountability)
+### Community Safety Initiatives {#community-safety}
+- **Neighborhood Input**: Regular community meetings to identify local safety priorities
+- **Youth Safety Programs**: Partner with schools for pedestrian and bike safety education
+- **Emergency Response**: Coordinate with local law enforcement and first responders
+
+**Related:** [Economic Development](/issues/local-economy), [Youth Programs & Parks](/issues/youth-programs)

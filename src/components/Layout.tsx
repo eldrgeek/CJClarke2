@@ -10,7 +10,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) => {
   const navItems = [
     { label: 'Home', href: '/', labelEs: 'Inicio' },
-    { label: 'Meet Chris', href: '/meet', labelEs: 'Conoce a Chris' },
+    { label: 'Meet CJ', href: '/meet', labelEs: 'Conoce a CJ' },
     { label: 'Issues', href: '/issues', labelEs: 'Temas' },
     { label: 'News', href: '/news', labelEs: 'Noticias' },
     { label: 'Get Involved', href: '/get-involved', labelEs: 'Participa' },
@@ -32,9 +32,9 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             <div className="flex items-center">
               <button
                 onClick={() => handleNavigation('/')}
-                className="flex items-center space-x-2 text-xl font-bold text-blue-900 hover:text-blue-700 transition-colors"
+                className="flex items-center space-x-2 text-xl font-bold text-cj-blue hover:text-cj-blue/80 transition-colors"
               >
-                <Heart className="h-6 w-6 text-red-500" />
+                <Heart className="h-6 w-6 text-cj-red" />
                 <span>CJ Clarke</span>
               </button>
             </div>
@@ -45,10 +45,10 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 <button
                   key={item.href}
                   onClick={() => handleNavigation(item.href)}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                  className={`text-sm font-medium transition-colors hover:text-cj-blue ${
                     currentPath === item.href
-                      ? 'text-blue-600 border-b-2 border-blue-600 pb-1'
-                      : 'text-gray-700'
+                      ? 'text-cj-blue border-b-2 border-cj-blue pb-1'
+                      : 'text-cj-gray-900'
                   }`}
                 >
                   {isSpanish ? item.labelEs : item.label}
@@ -58,7 +58,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
               {/* Language Toggle */}
               <button
                 onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1 border rounded transition-colors"
+                className="text-sm font-medium text-cj-gray-900 hover:text-cj-blue px-2 py-1 border rounded transition-colors"
               >
                 {isSpanish ? 'EN' : 'ES'}
               </button>
@@ -66,7 +66,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
               {/* Donate Button */}
               <button
                 onClick={() => handleNavigation('/donate')}
-                className="bg-blue-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition-colors transform hover:scale-105 shadow-md"
+                className="bg-cj-red text-cj-white px-6 py-2 rounded-full font-semibold hover:bg-cj-red/90 transition-colors transform hover:scale-105 shadow-md"
               >
                 {isSpanish ? 'Donar' : 'Donate'}
               </button>
@@ -76,7 +76,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             <div className="md:hidden">
               <button
                 onClick={() => handleNavigation('/donate')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-700 transition-colors"
+                className="bg-cj-red text-cj-white px-4 py-2 rounded-full font-semibold hover:bg-cj-red/90 transition-colors"
               >
                 {isSpanish ? 'Donar' : 'Donate'}
               </button>
@@ -93,8 +93,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 onClick={() => handleNavigation(item.href)}
                 className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   currentPath === item.href
-                    ? 'bg-blue-50 text-blue-600'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-cj-blue/10 text-cj-blue'
+                    : 'text-cj-gray-900 hover:bg-cj-gray-50'
                 }`}
               >
                 {isSpanish ? item.labelEs : item.label}
@@ -102,7 +102,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             ))}
             <button
               onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
-              className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-cj-gray-900 hover:bg-cj-gray-50"
             >
               {isSpanish ? 'English' : 'Español'}
             </button>
@@ -114,13 +114,13 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
       <main>{children}</main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white">
+      <footer className="bg-cj-blue text-cj-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Campaign Info */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Heart className="h-6 w-6 text-red-500" />
+                <Heart className="h-6 w-6 text-cj-red" />
                 <span className="text-xl font-bold">CJ Clarke</span>
               </div>
               <p className="text-gray-300 mb-4">
@@ -167,7 +167,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-cj-blue/30 mt-8 pt-8 text-center text-cj-white/70">
             <p>&copy; {new Date().getFullYear()} Paid for by CJ Clarke for City Council</p>
           </div>
         </div>
