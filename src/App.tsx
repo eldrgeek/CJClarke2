@@ -304,7 +304,35 @@ function App() {
               console.log('Default page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
               return null;
             })()}
-            {doc.html && doc.html.trim() ? (
+            {/* Check for component field in frontmatter */}
+            {doc.fm.component ? (
+              (() => {
+                const ComponentName = doc.fm.component;
+                if (ComponentName === 'CampaignFlyer') {
+                  const CampaignFlyer = React.lazy(() => import('./components/CampaignFlyer'));
+                  return (
+                    <React.Suspense fallback={<div className="text-center py-8">Loading flyer...</div>}>
+                      <CampaignFlyer />
+                    </React.Suspense>
+                  );
+                } else if (ComponentName === 'CampaignCard') {
+                  const CampaignCard = React.lazy(() => import('./components/CampaignCard'));
+                  return (
+                    <React.Suspense fallback={<div className="text-center py-8">Loading card...</div>}>
+                      <CampaignCard />
+                    </React.Suspense>
+                  );
+                }
+                return (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-red-800 mb-2">❌ Component Error</h3>
+                    <p className="text-red-700">
+                      Component <code className="bg-red-100 px-2 py-1 rounded text-sm">{ComponentName}</code> not found.
+                    </p>
+                  </div>
+                );
+              })()
+            ) : doc.html && doc.html.trim() ? (
               <ContentRenderer html={doc.html} />
             ) : (
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">

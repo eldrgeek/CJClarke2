@@ -13,6 +13,7 @@ export interface BaseFrontmatter {
   };
   seo?: { title?: string; description?: string; image?: string };
   schema?: { type?: string; data?: Record<string, unknown> };
+  component?: string;        // React component name for special pages
 }
 
 export interface IssueFrontmatter extends BaseFrontmatter {
