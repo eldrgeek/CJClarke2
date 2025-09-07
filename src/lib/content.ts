@@ -112,10 +112,24 @@ export async function loadSite(): Promise<SiteIndex> {
   };
 }
 
-export function resolveRoute(site: SiteIndex, route: string): RouteResult {
-  // Check pages first
+export function resolveRoute(site: SiteIndex, route: string, preferredLang?: string): RouteResult {
+  // Check pages first - try Spanish version first if preferred language is Spanish
+  if (preferredLang === 'es') {
+    // Look for Spanish version first (e.g., /meet-es for /meet)
+    const spanishSlug = route === '/' ? '/es' : `${route}-es`;
+    if (site.pagesBySlug[spanishSlug]) {
+      return { kind: "page", doc: site.pagesBySlug[spanishSlug] };
+    }
+  }
+
+  // Fall back to regular page
   if (site.pagesBySlug[route]) {
     return { kind: "page", doc: site.pagesBySlug[route] };
+  }
+
+  // Special case: if we're on /es and looking for home page, return the Spanish home page
+  if (route === '/' && preferredLang === 'es' && site.pagesBySlug['/es']) {
+    return { kind: "page", doc: site.pagesBySlug['/es'] };
   }
 
   // Check issues

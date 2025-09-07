@@ -16,13 +16,23 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
+  // Get preferred language from localStorage
+  const getPreferredLanguage = (): string => {
+    try {
+      const stored = localStorage.getItem('cj-clark-language');
+      return stored === 'es' ? 'es' : 'en';
+    } catch (error) {
+      return 'en';
+    }
+  };
+
   useEffect(() => {
     const initSite = async () => {
       try {
         const siteData = await loadSite();
         setSite(siteData);
         
-        const route = resolveRoute(siteData, currentPath);
+        const route = resolveRoute(siteData, currentPath, getPreferredLanguage());
         setCurrentRoute(route);
       } catch (error) {
         console.error('Failed to load site:', error);
@@ -39,7 +49,7 @@ function App() {
     const handlePopState = () => {
       setCurrentPath(window.location.pathname);
       if (site) {
-        const route = resolveRoute(site, window.location.pathname);
+        const route = resolveRoute(site, window.location.pathname, getPreferredLanguage());
         setCurrentRoute(route);
       }
     };

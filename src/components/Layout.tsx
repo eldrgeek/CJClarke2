@@ -37,11 +37,11 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
   };
 
   const navItems = [
-    { label: 'Home', href: '/', labelEs: 'Inicio' },
-    { label: 'Meet CJ', href: '/meet', labelEs: 'Conoce a CJ' },
-    { label: 'Issues', href: '/issues', labelEs: 'Temas' },
-    { label: 'News', href: '/news', labelEs: 'Noticias' },
-    { label: 'Get Involved', href: '/get-involved', labelEs: 'Participa' },
+    { label: 'Home', href: '/', hrefEs: '/es', labelEs: 'Inicio' },
+    { label: 'Meet CJ', href: '/meet', hrefEs: '/meet-es', labelEs: 'Conoce a CJ' },
+    { label: 'Issues', href: '/issues', hrefEs: '/issues-es', labelEs: 'Temas' },
+    { label: 'News', href: '/news', hrefEs: '/news-es', labelEs: 'Noticias' },
+    { label: 'Get Involved', href: '/get-involved', hrefEs: '/get-involved-es', labelEs: 'Participa' },
   ];
 
   const isSpanish = currentLanguage === 'es';
@@ -53,6 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
       updateLanguage(newLang);
       window.location.href = targetHref;
     } else {
+      // Regular navigation - use the href as provided (which should already include language-specific routing)
       window.location.href = href;
     }
     setIsMobileMenuOpen(false); // Close mobile menu on navigation
@@ -77,19 +78,22 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.href}
-                  onClick={() => handleNavigation(item.href)}
-                  className={`text-sm font-medium transition-colors hover:text-cj-blue ${
-                    currentPath === item.href
-                      ? 'text-cj-blue border-b-2 border-cj-blue pb-1'
-                      : 'text-cj-gray-900'
-                  }`}
-                >
-                  {isSpanish ? item.labelEs : item.label}
-                </button>
-              ))}
+              {navItems.map((item) => {
+                const itemHref = isSpanish ? (item.hrefEs || item.href) : item.href;
+                return (
+                  <button
+                    key={item.href}
+                    onClick={() => handleNavigation(itemHref)}
+                    className={`text-sm font-medium transition-colors hover:text-cj-blue ${
+                      currentPath === itemHref || (isSpanish && currentPath === item.href)
+                        ? 'text-cj-blue border-b-2 border-cj-blue pb-1'
+                        : 'text-cj-gray-900'
+                    }`}
+                  >
+                    {isSpanish ? item.labelEs : item.label}
+                  </button>
+                );
+              })}
               
               {/* Language Toggle - More Prominent */}
               <button
@@ -165,19 +169,22 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
               <div className="px-4 py-6 space-y-4">
                 {/* Navigation Links */}
                 <div className="space-y-2">
-                  {navItems.map((item) => (
-                    <button
-                      key={item.href}
-                      onClick={() => handleNavigation(item.href)}
-                      className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                        currentPath === item.href
-                          ? 'bg-cj-blue/10 text-cj-blue border-l-4 border-cj-blue'
-                          : 'text-gray-900 hover:bg-gray-50'
-                      }`}
-                    >
-                      {isSpanish ? item.labelEs : item.label}
-                    </button>
-                  ))}
+                  {navItems.map((item) => {
+                    const itemHref = isSpanish ? (item.hrefEs || item.href) : item.href;
+                    return (
+                      <button
+                        key={item.href}
+                        onClick={() => handleNavigation(itemHref)}
+                        className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                          currentPath === itemHref || (isSpanish && currentPath === item.href)
+                            ? 'bg-cj-blue/10 text-cj-blue border-l-4 border-cj-blue'
+                            : 'text-gray-900 hover:bg-gray-50'
+                        }`}
+                      >
+                        {isSpanish ? item.labelEs : item.label}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 {/* Language Toggle */}
