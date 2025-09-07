@@ -10,6 +10,11 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
   const isSpanish = lang === 'es';
 
   const handlePrint = () => {
+    // Determine page size based on which side is showing
+    const isFrontSide = showFront;
+    const pageWidth = isFrontSide ? '7in' : '5in';
+    const pageHeight = isFrontSide ? '5in' : '7in';
+
     // Create a print-specific stylesheet
     const printStyle = document.createElement('style');
     printStyle.innerHTML = `
@@ -20,14 +25,14 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
           position: absolute;
           left: 0;
           top: 0;
-          width: 7in;  /* 2100px at 300 DPI = 7 inches */
-          height: 5in; /* 1500px at 300 DPI = 5 inches */
+          width: ${pageWidth};
+          height: ${pageHeight};
         }
         /* Remove scaling for print - show Card3 at full resolution */
         #card-content > div > div > div {
           transform: none !important;
-          width: 2100px !important;
-          height: 1500px !important;
+          width: ${isFrontSide ? '2100px' : 'auto'} !important;
+          height: ${isFrontSide ? '1500px' : 'auto'} !important;
         }
         /* Ensure Card3 background is preserved */
         #card-content [style*="background-color: #01264e"] {
@@ -37,6 +42,13 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
         .card-side {
           page-break-inside: avoid !important;
           break-inside: avoid !important;
+          page-break-before: avoid !important;
+          page-break-after: avoid !important;
+        }
+        /* Set correct page size */
+        @page {
+          size: ${pageWidth} ${pageHeight};
+          margin: 0.25in;
         }
       }
     `;
@@ -125,22 +137,22 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
       </div>
 
       {/* Card Content */}
-      <div id="card-content" className="card-container bg-white shadow-lg mx-auto border-2 border-gray-300 print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
+      <div id="card-content" className="card-container bg-white shadow-lg mx-auto border-2 border-gray-300 print:shadow-none print:border-none" style={{maxWidth: showFront ? '7in' : '5in'}}>
         {showFront ? (
-          /* Front Side - Card3 Design */
-          <div className="card-side relative overflow-hidden" style={{width: '5in', height: '7in'}}>
-            {/* Scale Card3 to fit within the 5x7 inch container for screen viewing */}
+          /* Front Side - Card3 Design (Landscape) */
+          <div className="card-side relative overflow-hidden" style={{width: '7in', height: '5in'}}>
+            {/* Scale Card3 to fit within the 7x5 inch container for screen viewing */}
             <div style={{
-              width: '5in',
-              height: '7in',
+              width: '7in',
+              height: '5in',
               overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
               <div style={{
-                transform: 'scale(0.2286)', // Scale 2100px down to fit in 5in (5*96=480px, 2100*0.2286≈479px)
-                transformOrigin: 'top left',
+                transform: 'scale(0.333)', // Scale 2100px down to fit in 7in (7*96=672px, 2100*0.333≈700px)
+                transformOrigin: 'center',
                 width: '2100px',
                 height: '1500px'
               }}>
@@ -261,13 +273,19 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
             }
 
             .card-side {
-              width: 7in !important; /* Updated for Card3 dimensions */
-              height: 5in !important; /* Updated for Card3 dimensions */
+              width: 7in !important; /* Front side: landscape for Card3 */
+              height: 5in !important; /* Front side: landscape for Card3 */
               padding: 0 !important;
               margin: 0 auto !important;
               page-break-inside: avoid !important;
               break-inside: avoid !important;
               overflow: visible !important;
+            }
+
+            /* Back side dimensions for print */
+            .card-side:nth-child(2) {
+              width: 5in !important;
+              height: 7in !important;
             }
 
             @page {
@@ -320,7 +338,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
 
             .card-side {
               width: 100% !important;
-              min-height: auto !important;
+              height: auto !important;
+              min-height: 5in !important;
               padding: 1rem !important;
             }
 
