@@ -133,8 +133,8 @@ const ClarkCampaignCard = () => {
     setPanelDragOffset({ x: x - controlPanelPosition.x, y: y - controlPanelPosition.y });
   };
 
-  const handleGlobalMouseMove = (e: React.MouseEvent) => {
-    if (!isEditMode || !containerRef.current) return;
+  const handleGlobalMouseMove = (e: MouseEvent) => {
+    if (!containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -164,12 +164,43 @@ const ClarkCampaignCard = () => {
   };
 
   const handleGlobalMouseUp = () => {
-    if (!isEditMode) return;
-
+    // Always reset drag states, regardless of edit mode
     setIsDragging(false);
     setIsResizing(false);
     setIsDraggingPanel(false);
   };
+
+  // Add global mouse event listeners to prevent drag getting stuck
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      handleGlobalMouseMove(e);
+    };
+
+    const handleMouseUp = () => {
+      handleGlobalMouseUp();
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        // Safety mechanism: Escape key resets all drag states
+        setIsDragging(false);
+        setIsResizing(false);
+        setIsDraggingPanel(false);
+      }
+    };
+
+    if (isDraggingPanel || isDragging || isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isDraggingPanel, isDragging, isResizing, panelDragOffset, dragOffset, resizeStart, selectedElement, editMode]);
 
   const adjustFontSize = (elementId: string, delta: number) => {
     setFontSizes(prev => ({
@@ -245,13 +276,15 @@ const ClarkCampaignCard = () => {
             left: `${controlPanelPosition.x}px`,
             top: `${controlPanelPosition.y}px`,
             zIndex: 1000,
-            background: 'rgba(255, 255, 255, 0.95)',
-            border: '3px solid #333',
+            background: isDraggingPanel ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
+            border: `3px solid ${isDraggingPanel ? '#007bff' : '#333'}`,
             borderRadius: '12px',
             padding: '16px',
             minWidth: '280px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-            cursor: 'move'
+            boxShadow: isDraggingPanel ? '0 12px 32px rgba(0,123,255,0.3)' : '0 8px 24px rgba(0,0,0,0.4)',
+            cursor: isDraggingPanel ? 'grabbing' : 'move',
+            transform: isDraggingPanel ? 'scale(1.02)' : 'scale(1)',
+            transition: isDraggingPanel ? 'none' : 'all 0.2s ease'
           }}
           onMouseDown={handlePanelMouseDown}
         >
@@ -437,7 +470,9 @@ const ClarkCampaignCard = () => {
             {editMode === 'font' && 'Select an element and use +/- to change font size'}
             {editMode === 'resize' && 'Drag the orange handle to resize elements'}
             <br/><br/>
-            <em>💡 Tip: Click the ✕ button to clear selection</em>
+            <em>💡 Tips:</em><br/>
+            • Click ✕ to clear selection<br/>
+            • Press <strong>Escape</strong> if drag gets stuck
           </div>
         </div>
       )}
@@ -482,8 +517,6 @@ const ClarkCampaignCard = () => {
           border: '1px solid black', // 1px black border as requested
           cursor: isEditMode ? 'default' : 'default'
         }}
-        onMouseMove={handleGlobalMouseMove}
-        onMouseUp={handleGlobalMouseUp}
       >
         {/* Horizontal Red Bar (0-91px height) */}
         <div
