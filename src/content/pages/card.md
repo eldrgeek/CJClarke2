@@ -1,6 +1,6 @@
 ---
 type: "page"
-slug: "/card"
+slug: "/mailer"
 title: "Campaign Card - 5x7 Mail Piece"
 summary: "Official CJ Clark for City Council campaign card"
 hero:

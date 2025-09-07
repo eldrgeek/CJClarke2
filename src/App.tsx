@@ -329,7 +329,14 @@ function App() {
                   const CampaignCard = React.lazy(() => import('./components/CampaignCard'));
                   return (
                     <React.Suspense fallback={<div className="text-center py-8">Loading card...</div>}>
-                      <CampaignCard />
+                      <CampaignCard lang={doc.fm.lang} />
+                    </React.Suspense>
+                  );
+                } else if (ComponentName === 'BusinessCard') {
+                  const BusinessCard = React.lazy(() => import('./components/BusinessCard'));
+                  return (
+                    <React.Suspense fallback={<div className="text-center py-8">Loading business card...</div>}>
+                      <BusinessCard lang={doc.fm.lang} />
                     </React.Suspense>
                   );
                 }

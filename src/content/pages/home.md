@@ -4,7 +4,7 @@ slug: "/"
 title: "A Healthier, Safer Sheridan"
 summary: "U.S. Army veteran and world champion athlete Christophe James Clark brings practical leadership to City Council."
 hero:
-  image: "https://images.pexels.com/photos/5935794/pexels-photo-5935794.jpeg"
+  image: "/images/Chris Head Shot.jpeg"
   alt: "CJ Clark speaking with Sheridan neighbors at a community event"
 cta:
   primary: 
