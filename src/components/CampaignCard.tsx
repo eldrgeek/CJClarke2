@@ -86,89 +86,153 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
       </div>
 
       {/* Card Content */}
-      <div className="card-container bg-white shadow-lg mx-auto border-2 border-cj-blue print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
+      <div className="card-container bg-white shadow-lg mx-auto border-2 border-gray-300 print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
         {showFront ? (
-          /* Front Side */
-          <div className="card-side p-4">
-            {/* Header */}
-            <div className="card-header text-center mb-6">
-              <div className="flag-stripes flex h-4 mb-4">
+          /* Front Side - Professional Campaign Design */
+          <div className="card-side relative overflow-hidden" style={{width: '5in', height: '7in'}}>
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-blue-50 opacity-30"></div>
+
+            {/* American Flag Stripes Background */}
+            <div className="absolute top-0 left-0 right-0 h-16">
+              <div className="flex h-full">
                 <div className="bg-cj-red flex-1"></div>
                 <div className="bg-cj-white flex-1 border-l border-r border-gray-300"></div>
                 <div className="bg-cj-blue flex-1"></div>
               </div>
-              <h1 className="text-4xl font-bold text-cj-red mb-2" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.3)'}}>{content.vote}</h1>
-              <h2 className="text-3xl font-bold text-cj-blue">{content.clark}</h2>
             </div>
 
-            {/* Main Content */}
-            <div className="card-main mb-6">
-              <div className="hero-section flex items-center bg-gradient-to-br from-white to-cj-gray-50 p-4 rounded-lg border border-cj-blue">
-                <img
-                  src="https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
-                  alt="Christophe James Clark"
-                  className="cj-photo w-32 h-40 object-cover border-3 border-cj-red mr-4"
-                />
-                <div className="candidate-info flex-1">
-                  <h3 className="text-lg font-bold text-cj-blue mb-2">{content.christopheName}</h3>
-                  <p className="text-xs text-cj-gray-900 leading-relaxed">
-                    {content.veteran}
-                    <br />
-                    {content.goldMedalist}
-                    <br />
-                    {content.businessLeader}
-                  </p>
+            {/* Main Content Area */}
+            <div className="relative z-10 p-6 pt-20">
+              {/* Vote Clark Header */}
+              <div className="text-center mb-8">
+                <h1 className="text-5xl font-black text-cj-red mb-2 tracking-wider" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
+                  {content.vote}
+                </h1>
+                <h2 className="text-4xl font-bold text-cj-blue tracking-wide">
+                  {content.clark}
+                </h2>
+                <div className="w-24 h-1 bg-cj-red mx-auto mt-3 rounded-full"></div>
+              </div>
+
+              {/* Candidate Photo and Info */}
+              <div className="flex items-center justify-center mb-8">
+                <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-cj-blue">
+                  <img
+                    src="/images/Chris Head Shot.jpeg"
+                    alt="Christophe James Clark"
+                    className="w-32 h-40 object-cover rounded"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg";
+                    }}
+                  />
                 </div>
               </div>
-            </div>
 
-            {/* Footer */}
-            <div className="card-footer text-center border-t-2 border-cj-red pt-4">
-              <p className="text-lg font-bold text-cj-red mb-1">{content.slogan}</p>
-              <p className="text-sm text-cj-blue">{content.electionDate}</p>
+              {/* Key Message */}
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-cj-blue mb-2">{content.christopheName}</h3>
+                <p className="text-sm text-gray-700 font-medium">{content.title}</p>
+                <div className="flex justify-center items-center space-x-2 mt-3">
+                  <div className="w-2 h-2 bg-cj-red rounded-full"></div>
+                  <span className="text-xs font-semibold text-cj-blue uppercase tracking-wide">For City Council</span>
+                  <div className="w-2 h-2 bg-cj-blue rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Election Info */}
+              <div className="text-center border-t border-gray-300 pt-4">
+                <p className="text-lg font-bold text-cj-red mb-1">{content.slogan}</p>
+                <p className="text-sm text-cj-blue font-semibold">{content.electionDate}</p>
+                <p className="text-xs text-gray-600 mt-2">{isSpanish ? 'Marque su boleta por CJ Clark' : 'Mark your ballot for CJ Clark'}</p>
+              </div>
             </div>
           </div>
         ) : (
-          /* Back Side */
-          <div className="card-side p-4">
+          /* Back Side - Professional Campaign Design */
+          <div className="card-side relative" style={{width: '5in', height: '7in'}}>
+            {/* Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white"></div>
+
             {/* Header */}
-            <div className="back-header text-center mb-6 border-b-2 border-cj-red pb-2">
-              <h1 className="text-2xl font-bold text-cj-blue">{content.whyClark}</h1>
-            </div>
-
-            {/* Message Section */}
-            <div className="message-section mb-6">
-              <p className="text-xs leading-relaxed mb-3 text-justify">
-                {content.veteranMessage}
-              </p>
-
-              <p className="text-xs leading-relaxed mb-4 text-justify">
-                {content.businessMessage}
-              </p>
-
-              <div className="key-commitments bg-cj-gray-50 p-3 rounded-lg mb-4">
-                <h4 className="text-sm font-bold text-cj-blue mb-2">{content.commitmentsTitle}:</h4>
-                <ul className="text-xs space-y-1 pl-4">
-                  <li className="text-green-600">✓ {content.streets}</li>
-                  <li className="text-green-600">✓ {content.housing}</li>
-                  <li className="text-green-600">✓ {content.business}</li>
-                  <li className="text-green-600">✓ {content.youth}</li>
-                  <li className="text-green-600">✓ {isSpanish ? 'Transparencia: Responsabilidad fiscal y rendición de cuentas' : 'Transparency: Fiscal responsibility and accountability'}</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="back-footer flex justify-between items-end border-t-2 border-cj-red pt-4">
-              <div className="contact-info text-xs text-cj-gray-900 max-w-3/5">
-                <p className="font-bold">{content.paidForBy}</p>
-                <p>{content.website}</p>
-                <p>{content.phone}</p>
+            <div className="relative z-10 p-6">
+              <div className="text-center mb-6">
+                <h1 className="text-3xl font-bold text-cj-blue mb-2">{content.whyClark}</h1>
+                <div className="w-16 h-1 bg-cj-red mx-auto rounded-full"></div>
               </div>
 
-              <div className="final-cta text-center bg-cj-red text-white p-3 rounded-lg">
-                <h5 className="text-lg font-bold mb-1">VOTE {content.clark}</h5>
-                <p className="text-xs opacity-90">{content.electionDate}</p>
+              {/* Candidate Bio */}
+              <div className="mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <h3 className="text-lg font-bold text-cj-blue mb-3 text-center">{content.christopheName}</h3>
+                <div className="space-y-2 text-sm text-gray-700">
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-cj-red rounded-full mr-3 flex-shrink-0"></span>
+                    <span>{content.veteran}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-cj-blue rounded-full mr-3 flex-shrink-0"></span>
+                    <span>{content.goldMedalist}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-cj-red rounded-full mr-3 flex-shrink-0"></span>
+                    <span>{content.businessLeader}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Key Commitments */}
+              <div className="mb-6">
+                <h4 className="text-sm font-bold text-cj-blue mb-3 text-center uppercase tracking-wide">{content.commitmentsTitle}</h4>
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="flex items-center bg-red-50 p-2 rounded border-l-4 border-cj-red">
+                    <span className="text-cj-red mr-2">✓</span>
+                    <span className="text-xs font-medium">{content.streets}</span>
+                  </div>
+                  <div className="flex items-center bg-blue-50 p-2 rounded border-l-4 border-cj-blue">
+                    <span className="text-cj-blue mr-2">✓</span>
+                    <span className="text-xs font-medium">{content.housing}</span>
+                  </div>
+                  <div className="flex items-center bg-red-50 p-2 rounded border-l-4 border-cj-red">
+                    <span className="text-cj-red mr-2">✓</span>
+                    <span className="text-xs font-medium">{content.business}</span>
+                  </div>
+                  <div className="flex items-center bg-blue-50 p-2 rounded border-l-4 border-cj-blue">
+                    <span className="text-cj-blue mr-2">✓</span>
+                    <span className="text-xs font-medium">{content.youth}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Message */}
+              <div className="mb-6 bg-gradient-to-r from-cj-blue/5 to-cj-red/5 p-4 rounded-lg border border-gray-200">
+                <p className="text-xs leading-relaxed text-gray-700 italic text-center">
+                  "{isSpanish ? 'Comprometido con hacer de Sheridan un lugar más saludable y seguro para todos.' : 'Committed to making Sheridan a healthier, safer place for everyone.'}"
+                </p>
+              </div>
+
+              {/* Contact & Vote CTA */}
+              <div className="border-t border-gray-300 pt-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="text-center">
+                    <h5 className="text-sm font-bold text-cj-blue mb-2">{content.contactInfo}</h5>
+                    <div className="text-xs text-gray-600 space-y-1">
+                      <p>📧 {content.website}</p>
+                      <p>📞 {content.phone}</p>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="bg-cj-red text-white p-3 rounded-lg shadow-lg">
+                      <h4 className="text-lg font-bold mb-1">VOTE</h4>
+                      <h5 className="text-xl font-black">{content.clark}</h5>
+                      <p className="text-xs opacity-90 mt-1">{content.electionDate}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="text-center text-xs text-gray-500 border-t border-gray-200 pt-3">
+                  <p>{content.paidForBy}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -198,11 +262,16 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
 
             .card-side {
               width: 5in !important;
-              min-height: 7in !important;
-              padding: 0.4in !important;
-              box-sizing: border-box !important;
+              height: 7in !important;
+              padding: 0 !important;
               margin: 0 auto !important;
               page-break-inside: avoid !important;
+              overflow: visible !important;
+            }
+
+            @page {
+              size: 5in 7in;
+              margin: 0.25in;
             }
 
             .card-header,
