@@ -10,7 +10,7 @@ const CampaignCard: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-cj-blue mb-4">CJ Clarke Campaign Card</h1>
+        <h1 className="text-3xl font-bold text-cj-blue mb-4">CJ Clark Campaign Card</h1>
 
         {/* Card Controls */}
         <div className="flex justify-center gap-4 mb-4 print:hidden">
@@ -64,11 +64,11 @@ const CampaignCard: React.FC = () => {
               <div className="hero-section flex items-center bg-gradient-to-br from-white to-cj-gray-50 p-4 rounded-lg border border-cj-blue">
                 <img
                   src="https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
-                  alt="Christophe James Clarke"
+                  alt="Christophe James Clark"
                   className="cj-photo w-32 h-40 object-cover border-3 border-cj-red mr-4"
                 />
                 <div className="candidate-info flex-1">
-                  <h3 className="text-lg font-bold text-cj-blue mb-2">CHRISTOPHE JAMES CLARKE</h3>
+                  <h3 className="text-lg font-bold text-cj-blue mb-2">CHRISTOPHE JAMES CLARK</h3>
                   <p className="text-xs text-cj-gray-900 leading-relaxed">
                     U.S. Army Veteran
                     <br />
@@ -121,7 +121,7 @@ const CampaignCard: React.FC = () => {
             {/* Footer */}
             <div className="back-footer flex justify-between items-end border-t-2 border-cj-red pt-4">
               <div className="contact-info text-xs text-cj-gray-900 max-w-3/5">
-                <p className="font-bold">Paid for by CJ Clarke for City Council</p>
+                <p className="font-bold">Paid for by CJ Clark for City Council</p>
                 <p>cjclarkeforcouncil.org</p>
                 <p>(555) 123-4567</p>
               </div>

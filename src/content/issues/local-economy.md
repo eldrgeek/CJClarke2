@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/264507/pexels-photo-264507.jpeg"
   alt: "Local storefronts in Sheridan"
 seo:
-  description: "CJ Clarke will build on River Point's success while supporting small businesses with streamlined processes, revitalization, and entrepreneurial opportunities."
+  description: "CJ Clark will build on River Point's success while supporting small businesses with streamlined processes, revitalization, and entrepreneurial opportunities."
 ---
 
 ## Small Business & Local Economy

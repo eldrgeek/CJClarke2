@@ -38,7 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 className="flex items-center space-x-2 text-xl font-bold text-cj-blue hover:text-cj-blue/80 transition-colors"
               >
                 <Heart className="h-6 w-6 text-cj-red" />
-                <span>CJ Clarke</span>
+                <span>CJ Clark</span>
               </button>
             </div>
 
@@ -117,7 +117,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
               <div className="flex items-center justify-between p-4 border-b border-gray-200">
                 <div className="flex items-center space-x-2">
                   <Heart className="h-6 w-6 text-cj-red" />
-                  <span className="text-xl font-bold text-cj-blue">CJ Clarke</span>
+                  <span className="text-xl font-bold text-cj-blue">CJ Clark</span>
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -213,7 +213,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Heart className="h-6 w-6 text-cj-red" />
-                <span className="text-xl font-bold">CJ Clarke</span>
+                <span className="text-xl font-bold">CJ Clark</span>
               </div>
               <p className="text-gray-300 mb-4">
                 {isSpanish 
@@ -260,7 +260,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
           </div>
 
           <div className="border-t border-cj-blue/30 mt-8 pt-8 text-center text-cj-white/70">
-            <p>&copy; {new Date().getFullYear()} Paid for by CJ Clarke for City Council</p>
+            <p>&copy; {new Date().getFullYear()} Paid for by CJ Clark for City Council</p>
           </div>
         </div>
       </footer>

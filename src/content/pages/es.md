@@ -3,10 +3,10 @@ type: "page"
 slug: "/es"
 title: "Un Sheridan más saludable y seguro"
 lang: "es"
-summary: "Christophe James Clarke, veterano del ejército y campeón mundial, aporta liderazgo práctico al concejo."
+summary: "Christophe James Clark, veterano del ejército y campeón mundial, aporta liderazgo práctico al concejo."
 hero:
   image: "https://images.pexels.com/photos/5935794/pexels-photo-5935794.jpeg"
-  alt: "CJ Clarke conversa con vecinos de Sheridan en un evento comunitario"
+  alt: "CJ Clark conversa con vecinos de Sheridan en un evento comunitario"
 cta:
   primary:
     label: "Donar"
@@ -15,14 +15,14 @@ cta:
     label: "Ser voluntario"
     href: "/get-involved"
 seo:
-  description: "CJ Clarke para el Concejo Municipal de Sheridan: veterano del ejército, campeón mundial, líder comunitario comprometido con calles seguras y oportunidades para todos."
+  description: "CJ Clark para el Concejo Municipal de Sheridan: veterano del ejército, campeón mundial, líder comunitario comprometido con calles seguras y oportunidades para todos."
 ---
 
 **Un Sheridan más saludable y seguro**
 
-Christophe James Clarke es veterano del ejército estadounidense, triple medallista nacional de oro y líder comunitario dedicado de Sheridan. Con más de 15 años sirviendo a nuestra comunidad a través de su negocio [Chi Life Movement](https://chilifemovement.com) y sus roles actuales en la Comisión de Planificación y Zona y el Comité de Celebraciones de Sheridan, CJ aporta experiencia global y compromiso local al concejo municipal.
+Christophe James Clark es veterano del ejército estadounidense, triple medallista nacional de oro y líder comunitario dedicado de Sheridan. Con más de 15 años sirviendo a nuestra comunidad a través de su negocio [Chi Life Movement](https://chilifemovement.com) y sus roles actuales en la Comisión de Planificación y Zona y el Comité de Celebraciones de Sheridan, CJ aporta experiencia global y compromiso local al concejo municipal.
 
-### ¿Por qué CJ Clarke?
+### ¿Por qué CJ Clark?
 
 - **Líder Probado**: Veterano del ejército, atleta campeón mundial y propietario de negocio exitoso
 - **Campeón Comunitario**: Comisionado de Planificación y Zona (Representante Empresarial) y líder cívico activo

@@ -2,10 +2,10 @@
 type: "page"
 slug: "/"
 title: "A Healthier, Safer Sheridan"
-summary: "U.S. Army veteran and world champion athlete Christophe James Clarke brings practical leadership to City Council."
+summary: "U.S. Army veteran and world champion athlete Christophe James Clark brings practical leadership to City Council."
 hero:
   image: "https://images.pexels.com/photos/5935794/pexels-photo-5935794.jpeg"
-  alt: "CJ Clarke speaking with Sheridan neighbors at a community event"
+  alt: "CJ Clark speaking with Sheridan neighbors at a community event"
 cta:
   primary: 
     label: "Donate"
@@ -14,11 +14,11 @@ cta:
     label: "Volunteer" 
     href: "/get-involved"
 seo:
-  description: "CJ Clarke for Sheridan City Council: U.S. Army veteran, world champion athlete, and dedicated community leader fighting for safer streets, thriving businesses, and youth opportunities."
+  description: "CJ Clark for Sheridan City Council: U.S. Army veteran, world champion athlete, and dedicated community leader fighting for safer streets, thriving businesses, and youth opportunities."
 schema:
   type: "Person"
   data:
-    name: "Christophe James Clarke"
+    name: "Christophe James Clark"
     jobTitle: "Candidate for Sheridan City Council"
     url: "https://example.org/"
     sameAs: []
@@ -26,9 +26,9 @@ schema:
 
 **A Healthier, Safer Sheridan**
 
-Christophe James Clarke is a U.S. Army veteran, three-time national gold medalist, and dedicated Sheridan community leader. With over 15 years serving our community through his business [Chi Life Movement](https://chilifemovement.com) and current roles on the Planning & Zoning Commission and Sheridan Celebrates Committee, CJ brings global experience and local commitment to City Council.
+Christophe James Clark is a U.S. Army veteran, three-time national gold medalist, and dedicated Sheridan community leader. With over 15 years serving our community through his business [Chi Life Movement](https://chilifemovement.com) and current roles on the Planning & Zoning Commission and Sheridan Celebrates Committee, CJ brings global experience and local commitment to City Council.
 
-### Why CJ Clarke?
+### Why CJ Clark?
 
 - **Proven Leader**: U.S. Army veteran, world champion athlete, and successful business owner
 - **Community Champion**: Planning & Zoning Commissioner (Business Representative) and active civic leader

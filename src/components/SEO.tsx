@@ -13,7 +13,7 @@ const SEO: React.FC<SEOProps> = ({ frontmatter, baseUrl = 'https://example.org' 
   
   React.useEffect(() => {
     // Set document title
-    document.title = seoTitle + ' - CJ Clarke for Sheridan City Council';
+    document.title = seoTitle + ' - CJ Clark for Sheridan City Council';
     
     // Set meta description
     let metaDesc = document.querySelector('meta[name="description"]');
@@ -33,7 +33,7 @@ const SEO: React.FC<SEOProps> = ({ frontmatter, baseUrl = 'https://example.org' 
       { property: 'og:description', content: seoDescription },
       { property: 'og:image', content: seoImage },
       { property: 'og:type', content: 'website' },
-      { property: 'og:site_name', content: 'CJ Clarke for Sheridan City Council' }
+      { property: 'og:site_name', content: 'CJ Clark for Sheridan City Council' }
     ];
     
     ogTags.forEach(({ property, content }) => {

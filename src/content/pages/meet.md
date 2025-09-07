@@ -1,24 +1,24 @@
 ---
 type: "page"
 slug: "/meet"
-title: "Meet Christophe James Clarke"
+title: "Meet Christophe James Clark"
 summary: "U.S. Army veteran, world champion athlete, and dedicated community leader."
 hero:
   image: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
-  alt: "CJ Clarke teaching a youth class at his dojo"
+  alt: "CJ Clark teaching a youth class at his dojo"
 cta:
   primary:
     label: "Get Involved"
     href: "/get-involved"
 seo:
-  description: "Learn about CJ Clarke's remarkable journey as a U.S. Army veteran, world champion athlete, and dedicated Sheridan community leader."
+  description: "Learn about CJ Clark's remarkable journey as a U.S. Army veteran, world champion athlete, and dedicated Sheridan community leader."
 ---
 
-## Meet Christophe James Clarke
+## Meet Christophe James Clark
 
 ### A Lifetime of Service and Achievement
 
-Christophe James Clarke is a U.S. Army veteran, accomplished athlete, and long-time Sheridan resident with a distinguished career in medicine, sports, and the arts. At 66 years young, CJ embodies vitality and service, maintaining exceptional health through his lifetime practice of martial arts, meditation, and tai chi.
+Christophe James Clark is a U.S. Army veteran, accomplished athlete, and long-time Sheridan resident with a distinguished career in medicine, sports, and the arts. At 66 years young, CJ embodies vitality and service, maintaining exceptional health through his lifetime practice of martial arts, meditation, and tai chi.
 
 ### Military Service & Athletic Excellence
 

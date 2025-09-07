@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/296301/pexels-photo-296301.jpeg"
   alt: "Kids playing in a Sheridan park"
 seo:
-  description: "CJ Clarke will expand youth programs through parks, recreation, and community partnerships while supporting senior services and family activities."
+  description: "CJ Clark will expand youth programs through parks, recreation, and community partnerships while supporting senior services and family activities."
 ---
 
 ## Youth Programs & Parks

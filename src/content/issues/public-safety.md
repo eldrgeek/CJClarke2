@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/136413/pexels-photo-136413.jpeg"
   alt: "A Sheridan crosswalk near a school"
 seo:
-  description: "CJ Clarke will champion the Safe Streets Through Sheridan plan and improve Federal Boulevard safety with targeted traffic calming and community partnerships."
+  description: "CJ Clark will champion the Safe Streets Through Sheridan plan and improve Federal Boulevard safety with targeted traffic calming and community partnerships."
 ---
 
 ## Public Safety & Safe Streets

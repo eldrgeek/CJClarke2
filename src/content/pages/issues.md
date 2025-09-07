@@ -7,7 +7,7 @@ hero:
   image: "https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg"
   alt: "Sheridan neighborhood street and local storefronts"
 seo:
-  description: "CJ Clarke's comprehensive priorities: Safe Streets plan, housing affordability, River Point development, sustainability, and community health."
+  description: "CJ Clark's comprehensive priorities: Safe Streets plan, housing affordability, River Point development, sustainability, and community health."
 ---
 
 ## Issues & Priorities

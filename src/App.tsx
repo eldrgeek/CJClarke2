@@ -141,7 +141,7 @@ function App() {
             
             {/* Features section */}
             <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-              <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Why CJ Clarke?</h2>
+              <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Why CJ Clark?</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">

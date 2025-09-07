@@ -2,12 +2,12 @@
 type: "page"
 slug: "/get-involved"
 title: "Get Involved"
-summary: "Volunteer for CJ Clarke's campaign, host events, and help build a healthier Sheridan."
+summary: "Volunteer for CJ Clark's campaign, host events, and help build a healthier Sheridan."
 hero:
   image: "https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg"
   alt: "Volunteers at a community event"
 seo:
-  description: "Join CJ Clarke's campaign team — volunteer, host house parties, or show support with yard signs and help build a healthier Sheridan."
+  description: "Join CJ Clark's campaign team — volunteer, host house parties, or show support with yard signs and help build a healthier Sheridan."
 ---
 
 ## Get Involved

@@ -8,7 +8,7 @@ const CampaignFlyer: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-cj-blue mb-4">CJ Clarke Campaign Flyer</h1>
+        <h1 className="text-3xl font-bold text-cj-blue mb-4">CJ Clark Campaign Flyer</h1>
         <button
           onClick={handlePrint}
           className="bg-cj-red text-cj-white px-6 py-3 rounded-lg font-semibold hover:bg-cj-red/90 transition-colors flex items-center gap-2 mx-auto print:hidden"
@@ -43,11 +43,11 @@ const CampaignFlyer: React.FC = () => {
             <div className="hero-section flex border-2 border-cj-blue p-4 bg-gradient-to-br from-white to-cj-gray-50 rounded-lg">
               <img
                 src="https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
-                alt="Christophe James Clarke"
+                  alt="Christophe James Clark"
                 className="cj-photo w-48 h-60 object-cover border-4 border-cj-red mr-5"
               />
               <div className="hero-text flex-1">
-                <h3 className="text-2xl font-bold text-cj-blue mb-3">CHRISTOPHE JAMES CLARKE</h3>
+                <h3 className="text-2xl font-bold text-cj-blue mb-3">CHRISTOPHE JAMES CLARK</h3>
                 <p className="text-cj-gray-900 text-sm leading-relaxed">
                   U.S. Army Veteran • World Champion Athlete
                   <br />
@@ -86,7 +86,7 @@ const CampaignFlyer: React.FC = () => {
           {/* Footer */}
           <div className="flyer-footer flex justify-between items-center border-t-4 border-cj-red pt-4">
             <div className="contact-info text-xs text-cj-gray-900">
-              <p className="font-bold">Paid for by CJ Clarke for City Council</p>
+              <p className="font-bold">Paid for by CJ Clark for City Council</p>
               <p>Visit: cjclarkeforcouncil.org | Call: (555) 123-4567</p>
               <p>Email: info@cjclarkeforcouncil.org</p>
             </div>
