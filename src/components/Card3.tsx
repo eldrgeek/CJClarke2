@@ -1,6 +1,37 @@
 
 const ClarkCampaignCard = () => {
-  // Generate star positions for two rows
+  const handlePrint = () => {
+    // Create a print-specific stylesheet
+    const printStyle = document.createElement('style');
+    printStyle.innerHTML = `
+      @media print {
+        body * { visibility: hidden; }
+        #card3-content, #card3-content * { visibility: visible; }
+        #card3-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 3.5in;
+          height: 5in;
+          border: 1px solid black !important;
+        }
+        #card3-container {
+          border: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Print
+    window.print();
+
+    // Remove the print style after printing
+    setTimeout(() => {
+      document.head.removeChild(printStyle);
+    }, 1000);
+  };
+
+  // Generate larger star positions for two rows
   const generateStars = (row: number) => {
     const stars = [];
     const starSpacing = 1900 / 25; // Distribute 25 stars across 1900px width
@@ -16,8 +47,8 @@ const ClarkCampaignCard = () => {
             position: 'absolute',
             left: `${x}px`,
             top: `${y}px`,
-            width: '10px',
-            height: '10px',
+            width: '25px', // Made stars bigger
+            height: '25px', // Made stars bigger
             backgroundColor: 'white',
             clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
             transform: 'translate(-50%, -50%)',
@@ -30,221 +61,310 @@ const ClarkCampaignCard = () => {
   };
 
   return (
-    <div
-      style={{
-        width: '2100px',
-        height: '1500px',
-        backgroundColor: '#01264e', // Navy blue background
-        position: 'relative',
-        overflow: 'hidden',
-        fontFamily: 'Arial, sans-serif',
-      }}
-    >
-      {/* Horizontal Red Bar (0-91px height) */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '0px',
-          left: '0px',
-          right: '0px',
-          height: '91px',
-          backgroundColor: '#fe0100',
-          zIndex: 1,
-        }}
-      />
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="mb-6 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">CJ Clark Campaign Card</h1>
+        <button
+          onClick={handlePrint}
+          className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2 mx-auto print:hidden"
+        >
+          🖨️ Print Card
+        </button>
+        <p className="text-gray-600 mt-2 text-sm print:hidden">
+          Click "Print Card" above, then select your printer and paper size (3.5x5 inches)
+        </p>
+      </div>
 
-      {/* Red Stripe (1900-2010px width) */}
+      {/* Card Container */}
       <div
+        id="card3-container"
+        className="card-container mx-auto shadow-lg print:shadow-none"
         style={{
-          position: 'absolute',
-          top: '0px',
-          left: '1900px',
-          bottom: '0px',
-          width: '110px',
-          backgroundColor: '#fe0100',
-          zIndex: 1,
-        }}
-      />
-
-      {/* White Stripe (2010-2100px width) */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '0px',
-          left: '2010px',
-          bottom: '0px',
-          width: '90px',
-          backgroundColor: 'white',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Two Rows of White Stars */}
-      {generateStars(1)}
-      {generateStars(2)}
-
-      {/* Photo Frame (245,105 to 1035,630) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '245px',
-          top: '105px',
-          width: '790px', // 1035 - 245
-          height: '525px', // 630 - 105
-          backgroundColor: 'white',
-          padding: '40px', // White border (245-284 = 40px)
-          boxSizing: 'border-box',
-          zIndex: 3,
+          maxWidth: '3.5in',
+          aspectRatio: '7/10', // 3.5:5 ratio
+          border: '1px solid black' // 1px black border as requested
         }}
       >
         <div
+          id="card3-content"
           style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: '#01264e', // Blue border (284-294 = 10px, but using navy for blue)
-            padding: '10px',
-            boxSizing: 'border-box',
+            width: '3.5in',
+            height: '5in',
+            backgroundColor: '#01264e', // Navy blue background
+            position: 'relative',
+            overflow: 'hidden',
+            fontFamily: 'serif', // Serif font for all text
           }}
         >
-          <img
-            src="/images/Chris Head Shot.jpeg"
-            alt="Chris Head Shot"
+          {/* Horizontal Red Bar (0-91px height) */}
+          <div
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
+              position: 'absolute',
+              top: '0px',
+              left: '0px',
+              right: '0px',
+              height: '91px',
+              backgroundColor: '#fe0100',
+              zIndex: 1,
             }}
           />
+
+          {/* Red Stripe (1900-2010px width) */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '0px',
+              left: '1900px',
+              bottom: '0px',
+              width: '110px',
+              backgroundColor: '#fe0100',
+              zIndex: 1,
+            }}
+          />
+
+          {/* White Stripe (2010-2100px width) */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '0px',
+              left: '2010px',
+              bottom: '0px',
+              width: '90px',
+              backgroundColor: 'white',
+              zIndex: 1,
+            }}
+          />
+
+          {/* Two Rows of White Stars */}
+          {generateStars(1)}
+          {generateStars(2)}
+
+          {/* Photo Frame (245,105 to 1035,630) - Swapped width/height */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '245px',
+              top: '105px',
+              width: '525px', // Swapped: was 790px (1035-245), now height dimension
+              height: '790px', // Swapped: was 525px (630-105), now width dimension
+              backgroundColor: 'white',
+              padding: '40px', // White border (245-284 = 40px)
+              boxSizing: 'border-box',
+              zIndex: 3,
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                backgroundColor: '#01264e', // Blue border (284-294 = 10px, but using navy for blue)
+                padding: '10px',
+                boxSizing: 'border-box',
+              }}
+            >
+              <img
+                src="/images/Chris Head Shot.jpeg"
+                alt="Chris Head Shot"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* "CLARK" Text (baseline 885-648, width 684-1875) */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '684px',
+              top: '648px', // Adjusted for baseline positioning
+              width: '1191px', // 1875 - 684
+              height: '237px', // 885 - 648
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              fontSize: '120px',
+              fontWeight: 'bold',
+              color: '#fe0100',
+              textAlign: 'center',
+              fontFamily: 'serif',
+              WebkitTextStroke: '3px white',
+              zIndex: 4,
+            }}
+          >
+            CLARK
+          </div>
+
+          {/* "VOTE" Text (baseline 620, top 386, centered above Clark) */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '684px',
+              top: '386px',
+              width: '1191px',
+              height: '234px', // 620 - 386
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              fontSize: '80px',
+              fontWeight: 'bold',
+              fontFamily: 'serif',
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 4,
+            }}
+          >
+            VOTE
+          </div>
+
+          {/* "City council | Ward 3" (baseline 971, top 931) */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '931px',
+              transform: 'translateX(-50%)',
+              fontSize: '24px',
+              fontFamily: 'serif',
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 4,
+            }}
+          >
+            CITY COUNCIL | WARD 3
+          </div>
+
+          {/* "Christophe James Clark" (baseline 1101, centered beneath image) */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '1101px',
+              transform: 'translateX(-50%)',
+              fontSize: '28px',
+              fontWeight: 'bold',
+              fontFamily: 'serif',
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 4,
+            }}
+          >
+            CHRISTOPHE JAMES CLARK
+          </div>
+
+          {/* Additional Text (1171 to 1331) */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '1171px',
+              transform: 'translateX(-50%)',
+              width: '800px',
+              fontSize: '18px',
+              fontFamily: 'serif',
+              color: '#cccccc', // Lighter color
+              textAlign: 'center',
+              lineHeight: '1.4',
+              zIndex: 4,
+            }}
+          >
+            A dedicated public servant committed to serving Ward 3 with integrity,
+            experience, and a proven track record of getting things done.
+          </div>
+
+          {/* Contact Text (1364 to 1388) */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '1364px',
+              transform: 'translateX(-50%)',
+              fontSize: '16px',
+              fontFamily: 'serif',
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 4,
+            }}
+          >
+            Please connect with me to share your concerns about Sheridan and learn more about your candidate
+          </div>
+
+          {/* Contact Info */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '1400px',
+              transform: 'translateX(-50%)',
+              fontSize: '16px',
+              fontFamily: 'serif',
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 4,
+            }}
+          >
+            CELL 7202443927 | EMAIL Masterclarketaichi@gmail.com
+          </div>
         </div>
       </div>
 
-      {/* "CLARK" Text (baseline 885-648, width 684-1875) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '684px',
-          top: '648px', // Adjusted for baseline positioning
-          width: '1191px', // 1875 - 684
-          height: '237px', // 885 - 648
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          fontSize: '120px',
-          fontWeight: 'bold',
-          color: '#fe0100',
-          textAlign: 'center',
-          WebkitTextStroke: '3px white',
-          zIndex: 4,
-        }}
-      >
-        CLARK
+      {/* Print Instructions */}
+      <div className="mt-8 bg-gray-50 p-6 rounded-lg text-center print:hidden">
+        <h4 className="text-lg font-bold text-gray-900 mb-4">Printing Instructions:</h4>
+        <div className="text-sm text-gray-700 space-y-2">
+          <p>1. Click "Print Card" above</p>
+          <p>2. Select paper size: 3.5x5 inches</p>
+          <p>3. Set margins to 0.25 inches</p>
+          <p>4. Choose landscape or portrait orientation as needed</p>
+        </div>
       </div>
 
-      {/* "VOTE" Text (baseline 620, top 386, centered above Clark) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '684px',
-          top: '386px',
-          width: '1191px',
-          height: '234px', // 620 - 386
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          fontSize: '80px',
-          fontWeight: 'bold',
-          fontFamily: 'serif',
-          color: 'white',
-          textAlign: 'center',
-          zIndex: 4,
-        }}
-      >
-        VOTE
-      </div>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media print {
+            .card-container {
+              box-shadow: none !important;
+              margin: 0 !important;
+              border: none !important;
+              max-width: none !important;
+            }
 
-      {/* "City council | Ward 3" (baseline 971, top 931) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '931px',
-          transform: 'translateX(-50%)',
-          fontSize: '24px',
-          color: 'white',
-          textAlign: 'center',
-          zIndex: 4,
-        }}
-      >
-        CITY COUNCIL | WARD 3
-      </div>
+            #card3-content {
+              border: 1px solid black !important;
+              box-shadow: none !important;
+              width: 3.5in !important;
+              height: 5in !important;
+              margin: 0 auto !important;
+              page-break-inside: avoid !important;
+            }
 
-      {/* "Christophe James Clark" (baseline 1101, centered beneath image) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '1101px',
-          transform: 'translateX(-50%)',
-          fontSize: '28px',
-          fontWeight: 'bold',
-          color: 'white',
-          textAlign: 'center',
-          zIndex: 4,
-        }}
-      >
-        CHRISTOPHE JAMES CLARK
-      </div>
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+            }
 
-      {/* Additional Text (1171 to 1331) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '1171px',
-          transform: 'translateX(-50%)',
-          width: '800px',
-          fontSize: '18px',
-          color: '#cccccc', // Lighter color
-          textAlign: 'center',
-          lineHeight: '1.4',
-          zIndex: 4,
-        }}
-      >
-        A dedicated public servant committed to serving Ward 3 with integrity,
-        experience, and a proven track record of getting things done.
-      </div>
+            @page {
+              size: 3.5in 5in;
+              margin: 0.25in;
+            }
+          }
 
-      {/* Contact Text (1364 to 1388) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '1364px',
-          transform: 'translateX(-50%)',
-          fontSize: '16px',
-          color: 'white',
-          textAlign: 'center',
-          zIndex: 4,
-        }}
-      >
-        Please connect with me to share your concerns about Sheridan and learn more about your candidate
-      </div>
+          @media (max-width: 768px) {
+            .card-container {
+              max-width: 100% !important;
+              padding: 1rem !important;
+            }
 
-      {/* Contact Info */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '1400px',
-          transform: 'translateX(-50%)',
-          fontSize: '16px',
-          color: 'white',
-          textAlign: 'center',
-          zIndex: 4,
-        }}
-      >
-        CELL 7202443927 | EMAIL Masterclarketaichi@gmail.com
-      </div>
+            #card3-content {
+              width: 100% !important;
+              height: auto !important;
+              aspect-ratio: 7/10;
+            }
+          }
+        `
+      }} />
     </div>
   );
 };
