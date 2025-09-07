@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 className="bg-cj-blue text-cj-white px-4 py-2 rounded-full font-semibold hover:bg-cj-blue/90 transition-colors transform hover:scale-105 shadow-md text-sm"
                 title={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
               >
-                {isSpanish ? 'EN' : 'ES'}
+                {isSpanish ? 'EN' : 'Español'}
               </button>
 
               {/* Donate Button */}
@@ -83,7 +83,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
                 className="bg-cj-blue text-cj-white px-3 py-2 rounded-full font-semibold hover:bg-cj-blue/90 transition-colors text-sm"
               >
-                {isSpanish ? 'EN' : 'ES'}
+                {isSpanish ? 'EN' : 'Español'}
               </button>
 
               {/* Hamburger Menu Button */}
@@ -155,7 +155,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                   >
                     <span>{isSpanish ? 'Switch to English' : 'Cambiar a Español'}</span>
                     <span className="bg-cj-blue text-white px-3 py-1 rounded-full text-sm font-bold">
-                      {isSpanish ? 'EN' : 'ES'}
+                      {isSpanish ? 'EN' : 'Español'}
                     </span>
                   </button>
                 </div>
@@ -200,7 +200,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
           aria-label={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
         >
           <span className="text-lg font-bold">
-            {isSpanish ? 'EN' : 'ES'}
+            {isSpanish ? 'EN' : 'Español'}
           </span>
         </button>
       </div>
