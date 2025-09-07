@@ -26,8 +26,17 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
         /* Remove scaling for print - show Card3 at full resolution */
         #card-content > div > div > div {
           transform: none !important;
-          width: 7in !important;
-          height: 5in !important;
+          width: 2100px !important;
+          height: 1500px !important;
+        }
+        /* Ensure Card3 background is preserved */
+        #card-content [style*="background-color: #01264e"] {
+          background-color: #01264e !important;
+        }
+        /* Force single page printing */
+        .card-side {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
         }
       }
     `;
@@ -130,7 +139,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
               justifyContent: 'center'
             }}>
               <div style={{
-                transform: 'scale(0.238)', // Scale 2100px down to fit in ~5in (5*96=480px, 2100*0.238≈500px)
+                transform: 'scale(0.2286)', // Scale 2100px down to fit in 5in (5*96=480px, 2100*0.2286≈479px)
                 transformOrigin: 'top left',
                 width: '2100px',
                 height: '1500px'
@@ -257,12 +266,26 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
               padding: 0 !important;
               margin: 0 auto !important;
               page-break-inside: avoid !important;
+              break-inside: avoid !important;
               overflow: visible !important;
             }
 
             @page {
               size: 7in 5in; /* Updated for Card3 dimensions (landscape) */
               margin: 0.25in;
+            }
+
+            /* Ensure Card3 background is preserved when printing */
+            #card-content div[style*="background-color: #01264e"] {
+              background-color: #01264e !important;
+            }
+
+            /* Force single page for both front and back sides */
+            .card-side {
+              page-break-before: avoid !important;
+              page-break-after: avoid !important;
+              break-before: avoid !important;
+              break-after: avoid !important;
             }
 
             .card-header,
