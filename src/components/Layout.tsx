@@ -10,6 +10,32 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Initialize language from localStorage or use prop/default
+  const getStoredLanguage = (): string => {
+    try {
+      const stored = localStorage.getItem('cj-clark-language');
+      if (stored && (stored === 'es' || stored === 'en')) {
+        return stored;
+      }
+    } catch (error) {
+      console.warn('Failed to read language from localStorage:', error);
+    }
+    // Fall back to prop or default
+    return lang === 'es' ? 'es' : 'en';
+  };
+
+  const [currentLanguage, setCurrentLanguage] = useState<string>(getStoredLanguage());
+
+  // Update localStorage when language changes
+  const updateLanguage = (newLang: string) => {
+    try {
+      localStorage.setItem('cj-clark-language', newLang);
+      setCurrentLanguage(newLang);
+    } catch (error) {
+      console.warn('Failed to save language preference:', error);
+    }
+  };
+
   const navItems = [
     { label: 'Home', href: '/', labelEs: 'Inicio' },
     { label: 'Meet CJ', href: '/meet', labelEs: 'Conoce a CJ' },
@@ -18,10 +44,17 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
     { label: 'Get Involved', href: '/get-involved', labelEs: 'Participa' },
   ];
 
-  const isSpanish = lang === 'es';
+  const isSpanish = currentLanguage === 'es';
 
-  const handleNavigation = (href: string) => {
-    window.location.href = href;
+  const handleNavigation = (href: string, newLang?: string) => {
+    // If we're changing language, update the URL accordingly
+    if (newLang) {
+      const targetHref = newLang === 'es' ? (href === '/' ? '/es' : href) : href;
+      updateLanguage(newLang);
+      window.location.href = targetHref;
+    } else {
+      window.location.href = href;
+    }
     setIsMobileMenuOpen(false); // Close mobile menu on navigation
   };
 
@@ -60,7 +93,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
               
               {/* Language Toggle - More Prominent */}
               <button
-                onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+                onClick={() => handleNavigation(currentPath, isSpanish ? 'en' : 'es')}
                 className="bg-cj-blue text-cj-white px-4 py-2 rounded-full font-semibold hover:bg-cj-blue/90 transition-colors transform hover:scale-105 shadow-md text-sm"
                 title={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
               >
@@ -80,7 +113,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             <div className="md:hidden flex items-center space-x-3">
               {/* Language Toggle - Prominent on mobile */}
               <button
-                onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+                onClick={() => handleNavigation(currentPath, isSpanish ? 'en' : 'es')}
                 className="bg-cj-blue text-cj-white px-3 py-2 rounded-full font-semibold hover:bg-cj-blue/90 transition-colors text-sm"
               >
                 {isSpanish ? 'EN' : 'Español'}
@@ -150,7 +183,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 {/* Language Toggle */}
                 <div className="pt-4 border-t border-gray-200">
                   <button
-                    onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+                    onClick={() => handleNavigation(currentPath, isSpanish ? 'en' : 'es')}
                     className="flex items-center justify-between w-full px-4 py-3 bg-cj-blue/5 rounded-lg text-cj-blue font-medium hover:bg-cj-blue/10 transition-colors"
                   >
                     <span>{isSpanish ? 'Switch to English' : 'Cambiar a Español'}</span>
@@ -194,7 +227,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
       {/* Floating Language Toggle Button - Extra Prominent */}
       <div className="fixed bottom-6 right-6 z-30 md:hidden lg:block">
         <button
-          onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+          onClick={() => handleNavigation(currentPath, isSpanish ? 'en' : 'es')}
           className="bg-gradient-to-r from-cj-blue to-cj-blue/80 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 animate-pulse"
           title={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
           aria-label={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
