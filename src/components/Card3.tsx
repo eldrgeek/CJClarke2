@@ -16,6 +16,19 @@ const ClarkCampaignCard = () => {
   const [isResizing, setIsResizing] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [editMode, setEditMode] = useState<'move' | 'font' | 'resize'>('move');
+  const [controlPanelPosition, setControlPanelPosition] = useState({ x: 50, y: 50 });
+  const [isDraggingPanel, setIsDraggingPanel] = useState(false);
+  const [panelDragOffset, setPanelDragOffset] = useState({ x: 0, y: 0 });
+  const [fontSizes, setFontSizes] = useState<{ [key: string]: number }>({
+    'clark-text': 180,
+    'vote-text': 120,
+    'city-council-text': 18,
+    'christophe-name': 20,
+    'description-text': 16,
+    'contact-text': 12,
+    'contact-info': 14,
+  });
   const [elementPositions, setElementPositions] = useState<ElementPosition[]>([
     { id: 'photo-frame', left: 110, top: 373, width: 525, height: 790 },
     { id: 'clark-text', left: 661, top: 552, width: 1191, height: 237 },
@@ -94,18 +107,21 @@ const ClarkCampaignCard = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (isResizeHandle) {
+    if (editMode === 'resize' && isResizeHandle) {
       setIsResizing(true);
       setResizeStart({ x, y, width: element.width, height: element.height });
-    } else {
+    } else if (editMode === 'move') {
       setIsDragging(true);
       setDragOffset({ x: x - element.left, y: y - element.top });
     }
     setSelectedElement(elementId);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isEditMode || (!isDragging && !isResizing)) return;
+  const handlePanelMouseDown = (e: React.MouseEvent) => {
+    if (!isEditMode) return;
+
+    e.preventDefault();
+    e.stopPropagation();
 
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -113,23 +129,55 @@ const ClarkCampaignCard = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (selectedElement) {
-      if (isDragging) {
-        const newLeft = x - dragOffset.x;
-        const newTop = y - dragOffset.y;
-        updateElementPosition(selectedElement, { left: newLeft, top: newTop });
-      } else if (isResizing) {
-        const newWidth = Math.max(20, resizeStart.width + (x - resizeStart.x));
+    setIsDraggingPanel(true);
+    setPanelDragOffset({ x: x - controlPanelPosition.x, y: y - controlPanelPosition.y });
+  };
+
+  const handleGlobalMouseMove = (e: React.MouseEvent) => {
+    if (!isEditMode || !containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    if (isDraggingPanel) {
+      setControlPanelPosition({
+        x: Math.max(0, Math.min(2100 - 300, x - panelDragOffset.x)),
+        y: Math.max(0, Math.min(1500 - 200, y - panelDragOffset.y))
+      });
+    } else if (isDragging && selectedElement && editMode === 'move') {
+      updateElementPosition(selectedElement, {
+        left: x - dragOffset.x,
+        top: y - dragOffset.y
+      });
+    } else if (isResizing && selectedElement && editMode === 'resize') {
+      const element = getElementPosition(selectedElement);
+      if (element) {
+        const newWidth = Math.max(50, resizeStart.width + (x - resizeStart.x));
         const newHeight = Math.max(20, resizeStart.height + (y - resizeStart.y));
-        updateElementPosition(selectedElement, { width: newWidth, height: newHeight });
+        updateElementPosition(selectedElement, {
+          width: newWidth,
+          height: newHeight
+        });
       }
     }
   };
 
-  const handleMouseUp = () => {
+  const handleGlobalMouseUp = () => {
+    if (!isEditMode) return;
+
     setIsDragging(false);
     setIsResizing(false);
+    setIsDraggingPanel(false);
   };
+
+  const adjustFontSize = (elementId: string, delta: number) => {
+    setFontSizes(prev => ({
+      ...prev,
+      [elementId]: Math.max(8, Math.min(300, prev[elementId] + delta))
+    }));
+  };
+
 
   const exportPositions = () => {
     const exportData = {
@@ -189,7 +237,191 @@ const ClarkCampaignCard = () => {
 
   return (
     <div>
-      {/* Editor Controls */}
+      {/* Draggable Control Panel */}
+      {isEditMode && (
+        <div
+          style={{
+            position: 'absolute',
+            left: `${controlPanelPosition.x}px`,
+            top: `${controlPanelPosition.y}px`,
+            zIndex: 1000,
+            background: 'rgba(255, 255, 255, 0.95)',
+            border: '3px solid #333',
+            borderRadius: '12px',
+            padding: '16px',
+            minWidth: '280px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+            cursor: 'move'
+          }}
+          onMouseDown={handlePanelMouseDown}
+        >
+          {/* Drag Handle */}
+          <div
+            style={{
+              height: '20px',
+              background: '#333',
+              borderRadius: '8px 8px 0 0',
+              margin: '-16px -16px 12px -16px',
+              cursor: 'move'
+            }}
+          />
+
+          {/* Mode Selection */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>Edit Mode:</div>
+            <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+              <button
+                onClick={() => setEditMode('move')}
+                style={{
+                  flex: 1,
+                  background: editMode === 'move' ? '#28a745' : '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '12px'
+                }}
+              >
+                Move
+              </button>
+              <button
+                onClick={() => setEditMode('font')}
+                style={{
+                  flex: 1,
+                  background: editMode === 'font' ? '#28a745' : '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '12px'
+                }}
+              >
+                Font Size
+              </button>
+              <button
+                onClick={() => setEditMode('resize')}
+                style={{
+                  flex: 1,
+                  background: editMode === 'resize' ? '#28a745' : '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '12px'
+                }}
+              >
+                Resize
+              </button>
+            </div>
+          </div>
+
+          {/* Selected Element Info */}
+          <div style={{ fontSize: '12px', color: '#333', marginBottom: '12px' }}>
+            <strong>Selected:</strong> {selectedElement || 'None'}
+            {selectedElement && (
+              <div style={{ marginTop: '4px', fontSize: '11px', color: '#666' }}>
+                Size: {Math.round(getElementPosition(selectedElement)?.width || 0)} × {Math.round(getElementPosition(selectedElement)?.height || 0)}
+              </div>
+            )}
+          </div>
+
+          {/* Font Size Controls */}
+          {editMode === 'font' && selectedElement && (
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>Font Size:</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button
+                  onClick={() => selectedElement && adjustFontSize(selectedElement, -2)}
+                  style={{
+                    background: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  -
+                </button>
+                <div style={{ fontSize: '14px', fontWeight: 'bold', minWidth: '50px', textAlign: 'center' }}>
+                  {fontSizes[selectedElement] || 16}px
+                </div>
+                <button
+                  onClick={() => selectedElement && adjustFontSize(selectedElement, 2)}
+                  style={{
+                    background: '#28a745',
+                    color: 'white',
+                    border: 'none',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <button
+              onClick={exportPositions}
+              style={{
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: 'bold'
+              }}
+            >
+              📋 Export Positions
+            </button>
+            <button
+              onClick={resetPositions}
+              style={{
+                background: '#dc3545',
+                color: 'white',
+                border: 'none',
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: 'bold'
+              }}
+            >
+              🔄 Reset Positions
+            </button>
+          </div>
+
+          {/* Instructions */}
+          <div style={{
+            marginTop: '12px',
+            padding: '8px',
+            background: '#f8f9fa',
+            borderRadius: '6px',
+            fontSize: '11px',
+            color: '#666'
+          }}>
+            <strong>Instructions:</strong><br/>
+            {editMode === 'move' && 'Click and drag elements to move them'}
+            {editMode === 'font' && 'Select an element and use +/- to change font size'}
+            {editMode === 'resize' && 'Drag the orange handle to resize elements'}
+          </div>
+        </div>
+      )}
+
+      {/* Enable Edit Mode Toggle (outside the card) */}
       <div style={{
         position: 'fixed',
         top: '20px',
@@ -201,57 +433,19 @@ const ClarkCampaignCard = () => {
         padding: '12px',
         boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
       }}>
-        <div style={{ marginBottom: '8px' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 'bold' }}>
-            <input
-              type="checkbox"
-              checked={isEditMode}
-              onChange={(e) => {
-                setIsEditMode(e.target.checked);
-                if (!e.target.checked) {
-                  setSelectedElement(null);
-                }
-              }}
-            />
-            Edit Mode
-          </label>
-        </div>
-
-        {isEditMode && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div style={{ fontSize: '12px', color: '#666' }}>
-              Selected: {selectedElement || 'None'}
-            </div>
-            <button
-              onClick={exportPositions}
-              style={{
-                background: '#007bff',
-                color: 'white',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              Export Positions
-            </button>
-            <button
-              onClick={resetPositions}
-              style={{
-                background: '#dc3545',
-                color: 'white',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              Reset Positions
-            </button>
-          </div>
-        )}
+        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 'bold' }}>
+          <input
+            type="checkbox"
+            checked={isEditMode}
+            onChange={(e) => {
+              setIsEditMode(e.target.checked);
+              if (!e.target.checked) {
+                setSelectedElement(null);
+              }
+            }}
+          />
+          Edit Mode
+        </label>
       </div>
 
       {/* Card Container */}
@@ -267,8 +461,8 @@ const ClarkCampaignCard = () => {
           border: '1px solid black', // 1px black border as requested
           cursor: isEditMode ? 'default' : 'default'
         }}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
+        onMouseMove={handleGlobalMouseMove}
+        onMouseUp={handleGlobalMouseUp}
         onClick={() => isEditMode && setSelectedElement(null)}
       >
         {/* Horizontal Red Bar (0-91px height) */}
@@ -385,7 +579,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '180px',
+            fontSize: `${fontSizes['clark-text']}px`,
             fontWeight: 'bold',
             color: '#fe0100',
             textAlign: 'center',
@@ -404,7 +598,7 @@ const ClarkCampaignCard = () => {
         >
           CLARK
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'clark-text' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'clark-text' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'clark-text', true)}
               style={{
@@ -437,7 +631,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '120px',
+            fontSize: `${fontSizes['vote-text']}px`,
             fontWeight: 'bold',
             fontFamily: 'serif',
             color: 'white',
@@ -455,7 +649,7 @@ const ClarkCampaignCard = () => {
         >
           VOTE
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'vote-text' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'vote-text' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'vote-text', true)}
               style={{
@@ -488,7 +682,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '18px',
+            fontSize: `${fontSizes['city-council-text']}px`,
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
@@ -505,7 +699,7 @@ const ClarkCampaignCard = () => {
         >
           CITY COUNCIL | WARD 3
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'city-council-text' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'city-council-text' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'city-council-text', true)}
               style={{
@@ -538,7 +732,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '20px',
+            fontSize: `${fontSizes['christophe-name']}px`,
             fontWeight: 'bold',
             fontFamily: 'serif',
             color: 'white',
@@ -556,7 +750,7 @@ const ClarkCampaignCard = () => {
         >
           CHRISTOPHE JAMES CLARK
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'christophe-name' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'christophe-name' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'christophe-name', true)}
               style={{
@@ -589,7 +783,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '16px',
+            fontSize: `${fontSizes['description-text']}px`,
             fontFamily: 'serif',
             color: '#cccccc',
             textAlign: 'center',
@@ -606,7 +800,7 @@ const ClarkCampaignCard = () => {
           A dedicated public servant committed to serving Ward 3 with integrity,
           experience, and a proven track record of getting things done.
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'description-text' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'description-text' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'description-text', true)}
               style={{
@@ -639,7 +833,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '12px',
+            fontSize: `${fontSizes['contact-text']}px`,
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
@@ -655,7 +849,7 @@ const ClarkCampaignCard = () => {
         >
           Please connect with me to share your concerns about Sheridan and learn more about your candidate
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'contact-text' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'contact-text' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'contact-text', true)}
               style={{
@@ -688,7 +882,7 @@ const ClarkCampaignCard = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '14px',
+            fontSize: `${fontSizes['contact-info']}px`,
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
@@ -705,7 +899,7 @@ const ClarkCampaignCard = () => {
         >
           CELL 7202443927 | EMAIL Masterclarketaichi@gmail.com
           {/* Resize handle */}
-          {isEditMode && selectedElement === 'contact-info' && (
+          {isEditMode && editMode === 'resize' && selectedElement === 'contact-info' && (
             <div
               onMouseDown={(e) => handleMouseDown(e, 'contact-info', true)}
               style={{
