@@ -1,6 +1,6 @@
 ---
 type: "page"
-slug: "/meet"
+slug: "/meet-es"
 title: "Conoce a Christophe James Clark"
 lang: "es"
 summary: "Veterano del ejército estadounidense, atleta campeón mundial y líder comunitario dedicado."

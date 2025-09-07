@@ -1,6 +1,6 @@
 ---
 type: "page"
-slug: "/get-involved"
+slug: "/get-involved-es"
 title: "Participa"
 lang: "es"
 summary: "Voluntario para la campaña de CJ Clark, organiza eventos y ayuda a construir un Sheridan más saludable."

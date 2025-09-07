@@ -1,6 +1,6 @@
 ---
 type: "page"
-slug: "/issues"
+slug: "/issues-es"
 title: "Temas y Prioridades"
 lang: "es"
 summary: "Plan integral para calles más seguras, asequibilidad de vivienda, desarrollo económico y salud comunitaria."

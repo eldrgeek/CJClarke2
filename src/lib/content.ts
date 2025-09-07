@@ -132,6 +132,14 @@ export function resolveRoute(site: SiteIndex, route: string, preferredLang?: str
     return { kind: "page", doc: site.pagesBySlug['/es'] };
   }
 
+  // Handle the case where someone navigates to a Spanish URL directly (e.g., /meet-es)
+  // Check if it's a Spanish page slug and if the user is in Spanish mode
+  if (route.endsWith('-es') && preferredLang === 'es') {
+    if (site.pagesBySlug[route]) {
+      return { kind: "page", doc: site.pagesBySlug[route] };
+    }
+  }
+
   // Check issues
   if (route.startsWith('/issues/')) {
     const slug = route.replace('/issues/', '');

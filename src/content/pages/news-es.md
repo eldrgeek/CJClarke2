@@ -1,6 +1,6 @@
 ---
 type: "page"
-slug: "/news"
+slug: "/news-es"
 title: "Noticias y Actualizaciones"
 lang: "es"
 summary: "Anuncios de campaña, eventos comunitarios y comunicados de prensa de la campaña de CJ Clarke."
