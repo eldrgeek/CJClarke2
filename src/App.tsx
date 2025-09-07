@@ -339,6 +339,13 @@ function App() {
                       <BusinessCard lang={doc.fm.lang} />
                     </React.Suspense>
                   );
+                } else if (ComponentName === 'Card3') {
+                  const Card3 = React.lazy(() => import('./components/Card3'));
+                  return (
+                    <React.Suspense fallback={<div className="text-center py-8">Loading Card3...</div>}>
+                      <Card3 />
+                    </React.Suspense>
+                  );
                 }
                 return (
                   <div className="bg-red-50 border border-red-200 rounded-lg p-6">
