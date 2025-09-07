@@ -1,5 +1,5 @@
-import React from 'react';
-import { Heart, Facebook, Instagram, Twitter, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, Facebook, Instagram, Twitter, Mail, Menu, X } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,6 +8,8 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const navItems = [
     { label: 'Home', href: '/', labelEs: 'Inicio' },
     { label: 'Meet CJ', href: '/meet', labelEs: 'Conoce a CJ' },
@@ -20,6 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
 
   const handleNavigation = (href: string) => {
     window.location.href = href;
+    setIsMobileMenuOpen(false); // Close mobile menu on navigation
   };
 
   return (
@@ -55,10 +58,11 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
                 </button>
               ))}
               
-              {/* Language Toggle */}
+              {/* Language Toggle - More Prominent */}
               <button
                 onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
-                className="text-sm font-medium text-cj-gray-900 hover:text-cj-blue px-2 py-1 border rounded transition-colors"
+                className="bg-cj-blue text-cj-white px-4 py-2 rounded-full font-semibold hover:bg-cj-blue/90 transition-colors transform hover:scale-105 shadow-md text-sm"
+                title={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
               >
                 {isSpanish ? 'EN' : 'ES'}
               </button>
@@ -73,45 +77,133 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
             </nav>
 
             {/* Mobile menu button */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center space-x-3">
+              {/* Language Toggle - Prominent on mobile */}
               <button
-                onClick={() => handleNavigation('/donate')}
-                className="bg-cj-red text-cj-white px-4 py-2 rounded-full font-semibold hover:bg-cj-red/90 transition-colors"
+                onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+                className="bg-cj-blue text-cj-white px-3 py-2 rounded-full font-semibold hover:bg-cj-blue/90 transition-colors text-sm"
               >
-                {isSpanish ? 'Donar' : 'Donate'}
+                {isSpanish ? 'EN' : 'ES'}
+              </button>
+
+              {/* Hamburger Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="bg-cj-gray-100 text-cj-gray-900 p-2 rounded-lg hover:bg-cj-gray-200 transition-colors"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden bg-white border-t">
-          <div className="px-4 py-3 space-y-3">
-            {navItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => handleNavigation(item.href)}
-                className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  currentPath === item.href
-                    ? 'bg-cj-blue/10 text-cj-blue'
-                    : 'text-cj-gray-900 hover:bg-cj-gray-50'
-                }`}
-              >
-                {isSpanish ? item.labelEs : item.label}
-              </button>
-            ))}
-            <button
-              onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
-              className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-cj-gray-900 hover:bg-cj-gray-50"
-            >
-              {isSpanish ? 'English' : 'Español'}
-            </button>
+        {/* Mobile Navigation Overlay */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden">
+            {/* Overlay */}
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Slide-out Menu */}
+            <div className="fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out">
+              {/* Mobile Menu Header */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <div className="flex items-center space-x-2">
+                  <Heart className="h-6 w-6 text-cj-red" />
+                  <span className="text-xl font-bold text-cj-blue">CJ Clarke</span>
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X className="h-6 w-6 text-gray-600" />
+                </button>
+              </div>
+
+              {/* Mobile Menu Content */}
+              <div className="px-4 py-6 space-y-4">
+                {/* Navigation Links */}
+                <div className="space-y-2">
+                  {navItems.map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => handleNavigation(item.href)}
+                      className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                        currentPath === item.href
+                          ? 'bg-cj-blue/10 text-cj-blue border-l-4 border-cj-blue'
+                          : 'text-gray-900 hover:bg-gray-50'
+                      }`}
+                    >
+                      {isSpanish ? item.labelEs : item.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Language Toggle */}
+                <div className="pt-4 border-t border-gray-200">
+                  <button
+                    onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+                    className="flex items-center justify-between w-full px-4 py-3 bg-cj-blue/5 rounded-lg text-cj-blue font-medium hover:bg-cj-blue/10 transition-colors"
+                  >
+                    <span>{isSpanish ? 'Switch to English' : 'Cambiar a Español'}</span>
+                    <span className="bg-cj-blue text-white px-3 py-1 rounded-full text-sm font-bold">
+                      {isSpanish ? 'EN' : 'ES'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Donate Button */}
+                <div className="pt-4">
+                  <button
+                    onClick={() => handleNavigation('/donate')}
+                    className="w-full bg-cj-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-cj-red/90 transition-colors transform hover:scale-105 shadow-md"
+                  >
+                    {isSpanish ? 'Donar' : 'Donate'}
+                  </button>
+                </div>
+
+                {/* Social Links */}
+                <div className="pt-6 border-t border-gray-200">
+                  <p className="text-sm text-gray-600 mb-3 px-4">
+                    {isSpanish ? 'Síguenos' : 'Follow Us'}
+                  </p>
+                  <div className="flex justify-center space-x-6">
+                    <Facebook className="h-6 w-6 text-gray-400 hover:text-blue-600 cursor-pointer transition-colors" />
+                    <Instagram className="h-6 w-6 text-gray-400 hover:text-pink-600 cursor-pointer transition-colors" />
+                    <Twitter className="h-6 w-6 text-gray-400 hover:text-blue-400 cursor-pointer transition-colors" />
+                    <Mail className="h-6 w-6 text-gray-400 hover:text-green-600 cursor-pointer transition-colors" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </header>
 
       {/* Main Content */}
       <main>{children}</main>
+
+      {/* Floating Language Toggle Button - Extra Prominent */}
+      <div className="fixed bottom-6 right-6 z-30 md:hidden lg:block">
+        <button
+          onClick={() => handleNavigation(isSpanish ? '/' : '/es')}
+          className="bg-gradient-to-r from-cj-blue to-cj-blue/80 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 animate-pulse"
+          title={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
+          aria-label={isSpanish ? 'Switch to English' : 'Cambiar a Español'}
+        >
+          <span className="text-lg font-bold">
+            {isSpanish ? 'EN' : 'ES'}
+          </span>
+        </button>
+      </div>
 
       {/* Footer */}
       <footer className="bg-cj-blue text-cj-white">
