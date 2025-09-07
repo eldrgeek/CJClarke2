@@ -1,36 +1,5 @@
 
 const ClarkCampaignCard = () => {
-  const handlePrint = () => {
-    // Create a print-specific stylesheet
-    const printStyle = document.createElement('style');
-    printStyle.innerHTML = `
-      @media print {
-        body * { visibility: hidden; }
-        #card3-content, #card3-content * { visibility: visible; }
-        #card3-content {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 3.5in;
-          height: 5in;
-          border: 1px solid black !important;
-        }
-        #card3-container {
-          border: none !important;
-        }
-      }
-    `;
-    document.head.appendChild(printStyle);
-
-    // Print
-    window.print();
-
-    // Remove the print style after printing
-    setTimeout(() => {
-      document.head.removeChild(printStyle);
-    }, 1000);
-  };
-
   // Generate larger star positions for two rows
   const generateStars = (row: number) => {
     const stars = [];
@@ -61,41 +30,17 @@ const ClarkCampaignCard = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">CJ Clark Campaign Card</h1>
-        <button
-          onClick={handlePrint}
-          className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2 mx-auto print:hidden"
-        >
-          🖨️ Print Card
-        </button>
-        <p className="text-gray-600 mt-2 text-sm print:hidden">
-          Click "Print Card" above, then select your printer and paper size (3.5x5 inches)
-        </p>
-      </div>
-
-      {/* Card Container */}
-      <div
-        id="card3-container"
-        className="card-container mx-auto shadow-lg print:shadow-none"
-        style={{
-          maxWidth: '3.5in',
-          aspectRatio: '7/10', // 3.5:5 ratio
-          border: '1px solid black' // 1px black border as requested
-        }}
-      >
-        <div
-          id="card3-content"
-          style={{
-            width: '3.5in',
-            height: '5in',
-            backgroundColor: '#01264e', // Navy blue background
-            position: 'relative',
-            overflow: 'hidden',
-            fontFamily: 'serif', // Serif font for all text
-          }}
-        >
+    <div
+      style={{
+        width: '2100px',
+        height: '1500px',
+        backgroundColor: '#01264e', // Navy blue background
+        position: 'relative',
+        overflow: 'hidden',
+        fontFamily: 'serif', // Serif font for all text
+        border: '1px solid black' // 1px black border as requested
+      }}
+    >
           {/* Horizontal Red Bar (0-91px height) */}
           <div
             style={{
@@ -307,64 +252,6 @@ const ClarkCampaignCard = () => {
           >
             CELL 7202443927 | EMAIL Masterclarketaichi@gmail.com
           </div>
-        </div>
-      </div>
-
-      {/* Print Instructions */}
-      <div className="mt-8 bg-gray-50 p-6 rounded-lg text-center print:hidden">
-        <h4 className="text-lg font-bold text-gray-900 mb-4">Printing Instructions:</h4>
-        <div className="text-sm text-gray-700 space-y-2">
-          <p>1. Click "Print Card" above</p>
-          <p>2. Select paper size: 3.5x5 inches</p>
-          <p>3. Set margins to 0.25 inches</p>
-          <p>4. Choose landscape or portrait orientation as needed</p>
-        </div>
-      </div>
-
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          @media print {
-            .card-container {
-              box-shadow: none !important;
-              margin: 0 !important;
-              border: none !important;
-              max-width: none !important;
-            }
-
-            #card3-content {
-              border: 1px solid black !important;
-              box-shadow: none !important;
-              width: 3.5in !important;
-              height: 5in !important;
-              margin: 0 auto !important;
-              page-break-inside: avoid !important;
-            }
-
-            body {
-              margin: 0 !important;
-              padding: 0 !important;
-            }
-
-            @page {
-              size: 3.5in 5in;
-              margin: 0.25in;
-            }
-          }
-
-          @media (max-width: 768px) {
-            .card-container {
-              max-width: 100% !important;
-              padding: 1rem !important;
-            }
-
-            #card3-content {
-              width: 100% !important;
-              height: auto !important;
-              aspect-ratio: 7/10;
-            }
-          }
-        `
-      }} />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Card3 from './Card3';
 
 interface CampaignCardProps {
   lang?: string;
@@ -19,8 +20,14 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
           position: absolute;
           left: 0;
           top: 0;
-          width: 5in;
-          height: 7in;
+          width: 7in;  /* 2100px at 300 DPI = 7 inches */
+          height: 5in; /* 1500px at 300 DPI = 5 inches */
+        }
+        /* Remove scaling for print - show Card3 at full resolution */
+        #card-content > div > div > div {
+          transform: none !important;
+          width: 7in !important;
+          height: 5in !important;
         }
       }
     `;
@@ -111,63 +118,24 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
       {/* Card Content */}
       <div id="card-content" className="card-container bg-white shadow-lg mx-auto border-2 border-gray-300 print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
         {showFront ? (
-          /* Front Side - Professional Campaign Design */
+          /* Front Side - Card3 Design */
           <div className="card-side relative overflow-hidden" style={{width: '5in', height: '7in'}}>
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-blue-50 opacity-30"></div>
-
-            {/* American Flag Stripes Background */}
-            <div className="absolute top-0 left-0 right-0 h-16">
-              <div className="flex h-full">
-                <div className="bg-cj-red flex-1"></div>
-                <div className="bg-cj-white flex-1 border-l border-r border-gray-300"></div>
-                <div className="bg-cj-blue flex-1"></div>
-              </div>
-            </div>
-
-            {/* Main Content Area */}
-            <div className="relative z-10 p-6 pt-20">
-              {/* Vote Clark Header */}
-              <div className="text-center mb-8">
-                <h1 className="text-5xl font-black text-cj-red mb-2 tracking-wider" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
-                  {content.vote}
-                </h1>
-                <h2 className="text-4xl font-bold text-cj-blue tracking-wide">
-                  {content.clark}
-                </h2>
-                <div className="w-24 h-1 bg-cj-red mx-auto mt-3 rounded-full"></div>
-              </div>
-
-              {/* Candidate Photo and Info */}
-              <div className="flex items-center justify-center mb-8">
-                <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-cj-blue">
-                  <img
-                    src="/images/Chris Head Shot.jpeg"
-                    alt="Christophe James Clark"
-                    className="w-32 h-40 object-cover rounded"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg";
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Key Message */}
-              <div className="text-center mb-8">
-                <h3 className="text-xl font-bold text-cj-blue mb-2">{content.christopheName}</h3>
-                <p className="text-sm text-gray-700 font-medium">{content.title}</p>
-                <div className="flex justify-center items-center space-x-2 mt-3">
-                  <div className="w-2 h-2 bg-cj-red rounded-full"></div>
-                  <span className="text-xs font-semibold text-cj-blue uppercase tracking-wide">For City Council</span>
-                  <div className="w-2 h-2 bg-cj-blue rounded-full"></div>
-                </div>
-              </div>
-
-              {/* Election Info */}
-              <div className="text-center border-t border-gray-300 pt-4">
-                <p className="text-lg font-bold text-cj-red mb-1">{content.slogan}</p>
-                <p className="text-sm text-cj-blue font-semibold">{content.electionDate}</p>
-                <p className="text-xs text-gray-600 mt-2">{isSpanish ? 'Marque su boleta por CJ Clark' : 'Mark your ballot for CJ Clark'}</p>
+            {/* Scale Card3 to fit within the 5x7 inch container for screen viewing */}
+            <div style={{
+              width: '5in',
+              height: '7in',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <div style={{
+                transform: 'scale(0.238)', // Scale 2100px down to fit in ~5in (5*96=480px, 2100*0.238≈500px)
+                transformOrigin: 'top left',
+                width: '2100px',
+                height: '1500px'
+              }}>
+                <Card3 />
               </div>
             </div>
           </div>
@@ -284,8 +252,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
             }
 
             .card-side {
-              width: 5in !important;
-              height: 7in !important;
+              width: 7in !important; /* Updated for Card3 dimensions */
+              height: 5in !important; /* Updated for Card3 dimensions */
               padding: 0 !important;
               margin: 0 auto !important;
               page-break-inside: avoid !important;
@@ -293,7 +261,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
             }
 
             @page {
-              size: 5in 7in;
+              size: 7in 5in; /* Updated for Card3 dimensions (landscape) */
               margin: 0.25in;
             }
 
@@ -316,7 +284,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
             }
 
             @page {
-              size: 5in 7in;
+              size: 7in 5in; /* Updated for Card3 dimensions (landscape) */
               margin: 0.25in;
             }
           }
