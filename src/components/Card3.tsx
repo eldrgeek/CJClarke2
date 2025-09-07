@@ -18,13 +18,13 @@ const ClarkCampaignCard = () => {
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [elementPositions, setElementPositions] = useState<ElementPosition[]>([
     { id: 'photo-frame', left: 110, top: 373, width: 525, height: 790 },
-    { id: 'clark-text', left: 663, top: 546, width: 1191, height: 237 },
-    { id: 'vote-text', left: 644, top: 266, width: 1191, height: 234 },
-    { id: 'city-council-text', left: 47, top: 912, width: 200, height: 40 },
-    { id: 'christophe-name', left: 50, top: 1101, width: 300, height: 40 },
-    { id: 'description-text', left: 35, top: 1189, width: 800, height: 160 },
-    { id: 'contact-text', left: 37, top: 1359, width: 400, height: 20 },
-    { id: 'contact-info', left: 50, top: 1400, width: 500, height: 20 },
+    { id: 'clark-text', left: 661, top: 552, width: 1191, height: 237 },
+    { id: 'vote-text', left: 632, top: 281, width: 1191, height: 234 },
+    { id: 'city-council-text', left: 1080, top: 861, width: 200, height: 40 },
+    { id: 'christophe-name', left: 128, top: 1190, width: 300, height: 40 },
+    { id: 'description-text', left: 816, top: 1122, width: 800, height: 160 },
+    { id: 'contact-text', left: 864, top: 1329, width: 400, height: 20 },
+    { id: 'contact-info', left: 791, top: 1391, width: 500, height: 20 },
   ]);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,10 +79,12 @@ const ClarkCampaignCard = () => {
     );
   };
 
-  const handleMouseDown = (e: React.MouseEvent, elementId: string) => {
+  const handleMouseDown = (e: React.MouseEvent, elementId: string, isResizeHandle: boolean = false) => {
     if (!isEditMode) return;
 
     e.preventDefault();
+    e.stopPropagation();
+
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
 
@@ -91,13 +93,6 @@ const ClarkCampaignCard = () => {
 
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
-    // Check if clicking on resize handle (bottom-right corner)
-    const handleSize = 30; // Make handle bigger
-    const isResizeHandle = x >= element.left + element.width - handleSize &&
-                          y >= element.top + element.height - handleSize &&
-                          x <= element.left + element.width &&
-                          y <= element.top + element.height;
 
     if (isResizeHandle) {
       setIsResizing(true);
@@ -383,20 +378,23 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'clark-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${clarkPos?.left || 663}px`,
-            top: `${clarkPos?.top || 546}px`,
+            left: `${clarkPos?.left || 661}px`,
+            top: `${clarkPos?.top || 552}px`,
             width: `${clarkPos?.width || 1191}px`,
             height: `${clarkPos?.height || 237}px`,
             display: 'flex',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '120px',
+            fontSize: '180px',
             fontWeight: 'bold',
             color: '#fe0100',
             textAlign: 'center',
             fontFamily: 'serif',
             WebkitTextStroke: '3px white',
             whiteSpace: 'nowrap',
+            padding: '0',
+            margin: '0',
+            lineHeight: '1',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -408,6 +406,7 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'clark-text' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'clark-text', true)}
               style={{
                 position: 'absolute',
                 bottom: '-15px',
@@ -431,19 +430,22 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'vote-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${votePos?.left || 644}px`,
-            top: `${votePos?.top || 266}px`,
+            left: `${votePos?.left || 632}px`,
+            top: `${votePos?.top || 281}px`,
             width: `${votePos?.width || 1191}px`,
             height: `${votePos?.height || 234}px`,
             display: 'flex',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '80px',
+            fontSize: '120px',
             fontWeight: 'bold',
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
             whiteSpace: 'nowrap',
+            padding: '0',
+            margin: '0',
+            lineHeight: '1',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -455,6 +457,7 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'vote-text' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'vote-text', true)}
               style={{
                 position: 'absolute',
                 bottom: '-15px',
@@ -478,15 +481,21 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'city-council-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${cityPos?.left || 47}px`,
-            top: `${cityPos?.top || 912}px`,
+            left: `${cityPos?.left || 1080}px`,
+            top: `${cityPos?.top || 861}px`,
             width: `${cityPos?.width || 200}px`,
             height: `${cityPos?.height || 40}px`,
-            fontSize: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '18px',
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
             whiteSpace: 'nowrap',
+            padding: '0',
+            margin: '0',
+            lineHeight: '1',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -498,17 +507,19 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'city-council-text' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'city-council-text', true)}
               style={{
                 position: 'absolute',
-                bottom: '-10px',
-                right: '-10px',
-                width: '20px',
-                height: '20px',
+                bottom: '-15px',
+                right: '-15px',
+                width: '30px',
+                height: '30px',
                 background: '#ff6b35',
-                border: '2px solid white',
+                border: '3px solid white',
                 borderRadius: '50%',
                 cursor: 'nw-resize',
-                zIndex: 10
+                zIndex: 10,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
               }}
             />
           )}
@@ -520,16 +531,22 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'christophe-name' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${namePos?.left || 50}px`,
-            top: `${namePos?.top || 1101}px`,
+            left: `${namePos?.left || 128}px`,
+            top: `${namePos?.top || 1190}px`,
             width: `${namePos?.width || 300}px`,
             height: `${namePos?.height || 40}px`,
-            fontSize: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px',
             fontWeight: 'bold',
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
             whiteSpace: 'nowrap',
+            padding: '0',
+            margin: '0',
+            lineHeight: '1',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -541,17 +558,19 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'christophe-name' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'christophe-name', true)}
               style={{
                 position: 'absolute',
-                bottom: '-10px',
-                right: '-10px',
-                width: '20px',
-                height: '20px',
+                bottom: '-15px',
+                right: '-15px',
+                width: '30px',
+                height: '30px',
                 background: '#ff6b35',
-                border: '2px solid white',
+                border: '3px solid white',
                 borderRadius: '50%',
                 cursor: 'nw-resize',
-                zIndex: 10
+                zIndex: 10,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
               }}
             />
           )}
@@ -563,15 +582,20 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'description-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${descPos?.left || 35}px`,
-            top: `${descPos?.top || 1189}px`,
+            left: `${descPos?.left || 816}px`,
+            top: `${descPos?.top || 1122}px`,
             width: `${descPos?.width || 800}px`,
             height: `${descPos?.height || 160}px`,
-            fontSize: '18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '16px',
             fontFamily: 'serif',
             color: '#cccccc',
             textAlign: 'center',
-            lineHeight: '1.4',
+            lineHeight: '1.2',
+            padding: '0',
+            margin: '0',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -584,17 +608,19 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'description-text' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'description-text', true)}
               style={{
                 position: 'absolute',
-                bottom: '-10px',
-                right: '-10px',
-                width: '20px',
-                height: '20px',
+                bottom: '-15px',
+                right: '-15px',
+                width: '30px',
+                height: '30px',
                 background: '#ff6b35',
-                border: '2px solid white',
+                border: '3px solid white',
                 borderRadius: '50%',
                 cursor: 'nw-resize',
-                zIndex: 10
+                zIndex: 10,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
               }}
             />
           )}
@@ -606,14 +632,20 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'contact-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${contactPos?.left || 37}px`,
-            top: `${contactPos?.top || 1359}px`,
+            left: `${contactPos?.left || 864}px`,
+            top: `${contactPos?.top || 1329}px`,
             width: `${contactPos?.width || 400}px`,
             height: `${contactPos?.height || 20}px`,
-            fontSize: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '12px',
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
+            padding: '0',
+            margin: '0',
+            lineHeight: '1',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -625,17 +657,19 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'contact-text' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'contact-text', true)}
               style={{
                 position: 'absolute',
-                bottom: '-10px',
-                right: '-10px',
-                width: '20px',
-                height: '20px',
+                bottom: '-15px',
+                right: '-15px',
+                width: '30px',
+                height: '30px',
                 background: '#ff6b35',
-                border: '2px solid white',
+                border: '3px solid white',
                 borderRadius: '50%',
                 cursor: 'nw-resize',
-                zIndex: 10
+                zIndex: 10,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
               }}
             />
           )}
@@ -647,15 +681,21 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'contact-info' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${infoPos?.left || 50}px`,
-            top: `${infoPos?.top || 1400}px`,
+            left: `${infoPos?.left || 791}px`,
+            top: `${infoPos?.top || 1391}px`,
             width: `${infoPos?.width || 500}px`,
             height: `${infoPos?.height || 20}px`,
-            fontSize: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '14px',
             fontFamily: 'serif',
             color: 'white',
             textAlign: 'center',
             whiteSpace: 'nowrap',
+            padding: '0',
+            margin: '0',
+            lineHeight: '1',
             zIndex: 4,
             cursor: isEditMode ? 'move' : 'default',
             border: isEditMode ? '2px dashed #ff6b35' : 'none',
@@ -667,17 +707,19 @@ const ClarkCampaignCard = () => {
           {/* Resize handle */}
           {isEditMode && selectedElement === 'contact-info' && (
             <div
+              onMouseDown={(e) => handleMouseDown(e, 'contact-info', true)}
               style={{
                 position: 'absolute',
-                bottom: '-10px',
-                right: '-10px',
-                width: '20px',
-                height: '20px',
+                bottom: '-15px',
+                right: '-15px',
+                width: '30px',
+                height: '30px',
                 background: '#ff6b35',
-                border: '2px solid white',
+                border: '3px solid white',
                 borderRadius: '50%',
                 cursor: 'nw-resize',
-                zIndex: 10
+                zIndex: 10,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
               }}
             />
           )}
