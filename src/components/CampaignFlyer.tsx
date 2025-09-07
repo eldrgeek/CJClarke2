@@ -2,7 +2,30 @@ import React from 'react';
 
 const CampaignFlyer: React.FC = () => {
   const handlePrint = () => {
+    // Create a print-specific stylesheet
+    const printStyle = document.createElement('style');
+    printStyle.innerHTML = `
+      @media print {
+        body * { visibility: hidden; }
+        #flyer-content, #flyer-content * { visibility: visible; }
+        #flyer-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 8.5in;
+          min-height: 11in;
+        }
+      }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Print
     window.print();
+
+    // Remove the print style after printing
+    setTimeout(() => {
+      document.head.removeChild(printStyle);
+    }, 1000);
   };
 
   return (
@@ -21,7 +44,7 @@ const CampaignFlyer: React.FC = () => {
       </div>
 
       {/* Flyer Content */}
-      <div className="flyer-container bg-white shadow-lg mx-auto print:shadow-none" style={{maxWidth: '8.5in'}}>
+      <div id="flyer-content" className="flyer-container bg-white shadow-lg mx-auto print:shadow-none" style={{maxWidth: '8.5in'}}>
         <div className="flyer-content print:border-none print:shadow-none" style={{width: '8.5in', minHeight: '11in', padding: '0.5in', boxSizing: 'border-box', margin: '0 auto'}}>
           {/* Header */}
           <div className="flyer-header text-center mb-8">

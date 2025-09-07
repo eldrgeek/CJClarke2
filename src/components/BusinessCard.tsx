@@ -18,7 +18,30 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ lang = 'en' }) => {
   };
 
   const handlePrint = () => {
+    // Create a print-specific stylesheet
+    const printStyle = document.createElement('style');
+    printStyle.innerHTML = `
+      @media print {
+        body * { visibility: hidden; }
+        #business-card-content, #business-card-content * { visibility: visible; }
+        #business-card-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 3.5in;
+          height: 2in;
+        }
+      }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Print
     window.print();
+
+    // Remove the print style after printing
+    setTimeout(() => {
+      document.head.removeChild(printStyle);
+    }, 1000);
   };
 
   return (
@@ -34,7 +57,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ lang = 'en' }) => {
       </div>
 
       {/* Business Card */}
-      <div className="business-card bg-white shadow-lg mx-auto border-2 border-cj-blue print:shadow-none print:border-none" style={{maxWidth: '3.5in'}}>
+      <div id="business-card-content" className="business-card bg-white shadow-lg mx-auto border-2 border-cj-blue print:shadow-none print:border-none" style={{maxWidth: '3.5in'}}>
         <div className="p-4" style={{width: '3.5in', height: '2in'}}>
           {/* Header with Flag */}
           <div className="flex items-center mb-2">

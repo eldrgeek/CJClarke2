@@ -9,7 +9,30 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
   const isSpanish = lang === 'es';
 
   const handlePrint = () => {
+    // Create a print-specific stylesheet
+    const printStyle = document.createElement('style');
+    printStyle.innerHTML = `
+      @media print {
+        body * { visibility: hidden; }
+        #card-content, #card-content * { visibility: visible; }
+        #card-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 5in;
+          height: 7in;
+        }
+      }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Print
     window.print();
+
+    // Remove the print style after printing
+    setTimeout(() => {
+      document.head.removeChild(printStyle);
+    }, 1000);
   };
 
   // Text content based on language
@@ -86,7 +109,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ lang = 'en' }) => {
       </div>
 
       {/* Card Content */}
-      <div className="card-container bg-white shadow-lg mx-auto border-2 border-gray-300 print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
+      <div id="card-content" className="card-container bg-white shadow-lg mx-auto border-2 border-gray-300 print:shadow-none print:border-none" style={{maxWidth: '5in'}}>
         {showFront ? (
           /* Front Side - Professional Campaign Design */
           <div className="card-side relative overflow-hidden" style={{width: '5in', height: '7in'}}>
