@@ -12,9 +12,13 @@ const SEO: React.FC<SEOProps> = ({ frontmatter, baseUrl = 'https://example.org' 
   const seoImage = frontmatter.seo?.image || frontmatter.hero?.image || `${baseUrl}/og-default.jpg`;
   
   React.useEffect(() => {
-    // Set document title
-    document.title = seoTitle + ' - CJ Clark for Sheridan City Council';
-    
+    // Set document title with language-specific suffix
+    const isSpanish = frontmatter.lang === 'es';
+    const titleSuffix = isSpanish
+      ? ' - CJ Clark para el Concejo Municipal de Sheridan'
+      : ' - CJ Clark for Sheridan City Council';
+    document.title = seoTitle + titleSuffix;
+
     // Set meta description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {

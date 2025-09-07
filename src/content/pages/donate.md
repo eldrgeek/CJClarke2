@@ -7,7 +7,7 @@ hero:
   image: "https://images.pexels.com/photos/6647021/pexels-photo-6647021.jpeg"
   alt: "Community supporters at a campaign event"
 seo:
-  description: "Donate to help CJ Clarke reach more Sheridan voters."
+  description: "Donate to help CJ Clark reach more Sheridan voters."
 ---
 
 ## Donate

@@ -2,12 +2,12 @@
 type: "page"
 slug: "/news"
 title: "News & Updates"
-summary: "Campaign announcements, community events, and press releases from CJ Clarke's campaign."
+summary: "Campaign announcements, community events, and press releases from CJ Clark's campaign."
 hero:
   image: "https://images.pexels.com/photos/6647028/pexels-photo-6647028.jpeg"
-  alt: "CJ Clarke at a campaign announcement"
+  alt: "CJ Clark at a campaign announcement"
 seo:
-  description: "Stay up to date with CJ Clarke's campaign announcements, community events, and press releases for Sheridan City Council."
+  description: "Stay up to date with CJ Clark's campaign announcements, community events, and press releases for Sheridan City Council."
 ---
 
 ## News & Updates

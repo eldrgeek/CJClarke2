@@ -5,9 +5,9 @@ title: "Contact"
 summary: "Reach the campaign team."
 hero:
   image: "https://images.pexels.com/photos/5699456/pexels-photo-5699456.jpeg"
-  alt: "CJ Clarke speaking with community members"
+  alt: "CJ Clark speaking with community members"
 seo:
-  description: "Contact the CJ Clarke campaign."
+  description: "Contact the CJ Clark campaign."
 ---
 
 ## Contact

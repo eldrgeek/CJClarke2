@@ -4,7 +4,7 @@ slug: "/donate/success"
 title: "Thank you!"
 summary: "Your donation makes a difference."
 seo:
-  description: "Thank you for supporting the CJ Clarke campaign."
+  description: "Thank you for supporting the CJ Clark campaign."
 ---
 
 ## Thank you!

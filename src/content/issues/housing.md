@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg"
   alt: "Affordable housing in Sheridan"
 seo:
-  description: "CJ Clarke will support ADUs, the Bonsai Flats project, and inclusive housing solutions to ensure Sheridan remains affordable for all residents."
+  description: "CJ Clark will support ADUs, the Bonsai Flats project, and inclusive housing solutions to ensure Sheridan remains affordable for all residents."
 ---
 
 ## Housing Affordability

@@ -5,7 +5,7 @@ date: "2025-08-10"
 title: "Kickoff House Chat Announced"
 summary: "Join CJ and neighbors to talk priorities for a healthier, safer Sheridan."
 seo:
-  description: "Kickoff house chat with CJ Clarke — share your ideas and get involved."
+  description: "Kickoff house chat with CJ Clark — share your ideas and get involved."
 ---
 
 **Kickoff House Chat Announced**

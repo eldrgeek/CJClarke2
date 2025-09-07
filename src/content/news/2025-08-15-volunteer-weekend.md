@@ -5,7 +5,7 @@ date: "2025-08-15"
 title: "Volunteer Weekend Launch"
 summary: "Help us knock doors, make calls, and spread the word."
 seo:
-  description: "Volunteer Weekend — join the CJ Clarke campaign team and make an impact."
+  description: "Volunteer Weekend — join the CJ Clark campaign team and make an impact."
 ---
 
 **Volunteer Weekend Launch**

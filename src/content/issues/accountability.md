@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg"
   alt: "City budget documents on a table"
 seo:
-  description: "CJ Clarke will prioritize essential services with transparent reporting, clear metrics, and regular community updates including Spanish translation."
+  description: "CJ Clark will prioritize essential services with transparent reporting, clear metrics, and regular community updates including Spanish translation."
 ---
 
 ## Accountability & Budget Transparency

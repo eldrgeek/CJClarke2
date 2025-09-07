@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg"
   alt: "Sheridan farmers market"
 seo:
-  description: "CJ Clarke will support farmers markets, community gardens, and nutrition programs to ensure all Sheridan residents have access to healthy food options."
+  description: "CJ Clark will support farmers markets, community gardens, and nutrition programs to ensure all Sheridan residents have access to healthy food options."
 ---
 
 ## Food Access & Healthy Living

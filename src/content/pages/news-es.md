@@ -3,12 +3,12 @@ type: "page"
 slug: "/news-es"
 title: "Noticias y Actualizaciones"
 lang: "es"
-summary: "Anuncios de campaña, eventos comunitarios y comunicados de prensa de la campaña de CJ Clarke."
+summary: "Anuncios de campaña, eventos comunitarios y comunicados de prensa de la campaña de CJ Clark."
 hero:
   image: "https://images.pexels.com/photos/6647028/pexels-photo-6647028.jpeg"
-  alt: "CJ Clarke en un anuncio de campaña"
+  alt: "CJ Clark en un anuncio de campaña"
 seo:
-  description: "Mantente al día con los anuncios de campaña de CJ Clarke, eventos comunitarios y comunicados de prensa para el Concejo Municipal de Sheridan."
+  description: "Mantente al día con los anuncios de campaña de CJ Clark, eventos comunitarios y comunicados de prensa para el Concejo Municipal de Sheridan."
 ---
 
 ## Noticias y Actualizaciones
@@ -28,7 +28,7 @@ Mantente informado sobre el progreso de la campaña de CJ, eventos comunitarios 
 
 ### Comunicados de Prensa
 
-- **CJ Clarke Anuncia Plan de Calles Seguras** - Iniciativa integral para mejorar la seguridad vial en todo Sheridan
+- **CJ Clark Anuncia Plan de Calles Seguras** - Iniciativa integral para mejorar la seguridad vial en todo Sheridan
 - **Apoyo a Pequeños Negocios** - Compromiso para apoyar a emprendedores locales y revitalizar distritos comerciales
 - **Enfoque en Programas Juveniles** - Expansión de oportunidades recreativas y educativas para jóvenes de Sheridan
 

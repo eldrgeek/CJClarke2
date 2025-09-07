@@ -8,7 +8,7 @@ hero:
   image: "https://images.pexels.com/photos/2387819/pexels-photo-2387819.jpeg"
   alt: "Sheridan environmental conservation"
 seo:
-  description: "CJ Clarke will implement Sheridan's sustainability plan, support brownfield cleanup, and promote environmental health initiatives."
+  description: "CJ Clark will implement Sheridan's sustainability plan, support brownfield cleanup, and promote environmental health initiatives."
 ---
 
 ## Sustainability & Environment
