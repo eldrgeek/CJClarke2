@@ -320,7 +320,26 @@ const ClarkCampaignCard = () => {
 
           {/* Selected Element Info */}
           <div style={{ fontSize: '12px', color: '#333', marginBottom: '12px' }}>
-            <strong>Selected:</strong> {selectedElement || 'None'}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <strong>Selected:</strong> {selectedElement || 'None'}
+              {selectedElement && (
+                <button
+                  onClick={() => setSelectedElement(null)}
+                  style={{
+                    background: '#6c757d',
+                    color: 'white',
+                    border: 'none',
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '10px'
+                  }}
+                  title="Clear selection"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
             {selectedElement && (
               <div style={{ marginTop: '4px', fontSize: '11px', color: '#666' }}>
                 Size: {Math.round(getElementPosition(selectedElement)?.width || 0)} × {Math.round(getElementPosition(selectedElement)?.height || 0)}
@@ -417,6 +436,8 @@ const ClarkCampaignCard = () => {
             {editMode === 'move' && 'Click and drag elements to move them'}
             {editMode === 'font' && 'Select an element and use +/- to change font size'}
             {editMode === 'resize' && 'Drag the orange handle to resize elements'}
+            <br/><br/>
+            <em>💡 Tip: Click the ✕ button to clear selection</em>
           </div>
         </div>
       )}
@@ -463,7 +484,6 @@ const ClarkCampaignCard = () => {
         }}
         onMouseMove={handleGlobalMouseMove}
         onMouseUp={handleGlobalMouseUp}
-        onClick={() => isEditMode && setSelectedElement(null)}
       >
         {/* Horizontal Red Bar (0-91px height) */}
         <div
