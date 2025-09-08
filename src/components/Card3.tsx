@@ -29,29 +29,30 @@ const ClarkCampaignCard = () => {
     'contact-text': 12,
     'contact-info': 14,
   });
+  const [starSize, setStarSize] = useState({ width: 40, height: 40 }); // Bigger stars
   const [elementPositions, setElementPositions] = useState<ElementPosition[]>([
-    { id: 'photo-frame', left: 110, top: 373, width: 525, height: 790 },
-    { id: 'clark-text', left: 661, top: 552, width: 1191, height: 237 },
-    { id: 'vote-text', left: 632, top: 281, width: 1191, height: 234 },
-    { id: 'city-council-text', left: 1080, top: 861, width: 200, height: 40 },
-    { id: 'christophe-name', left: 128, top: 1190, width: 300, height: 40 },
-    { id: 'description-text', left: 816, top: 1122, width: 800, height: 160 },
-    { id: 'contact-text', left: 864, top: 1329, width: 400, height: 20 },
-    { id: 'contact-info', left: 791, top: 1391, width: 500, height: 20 },
+    { id: 'photo-frame', left: 46, top: 260, width: 525, height: 790 },
+    { id: 'clark-text', left: 661, top: 653, width: 1191, height: 237 },
+    { id: 'vote-text', left: 646, top: 378, width: 1191, height: 234 },
+    { id: 'city-council-text', left: 1060, top: 941, width: 433, height: 21 },
+    { id: 'christophe-name', left: 20, top: 1099, width: 490, height: 30 },
+    { id: 'description-text', left: 140, top: 1160, width: 1584, height: 98 },
+    { id: 'contact-text', left: 97, top: 1327, width: 1780, height: 25 },
+    { id: 'contact-info', left: 791, top: 1410, width: 500, height: 20 },
   ]);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Generate larger star positions for two rows
+  // Generate resizable star positions for two rows with more horizontal space consumption
   const generateStars = (row: number) => {
     const stars = [];
-    const starSpacing = 1900 / 25; // Distribute 25 stars across 1900px width
+    const starSpacing = 2000 / 25; // Increased from 1900 to 2000px for more horizontal space
 
     for (let i = 0; i < 25; i++) {
       const x = i * starSpacing + starSpacing / 2; // Center each star in its spacing
       const y = row === 1 ? 91 + 54.5 : 91 + 54.5 + 55; // Two rows: 91-145.5 and 146.5-201
 
-      stars.push(
+      const starElement = (
         <div
           key={`star-${row}-${i}`}
           data-element-id={`star-${row}-${i}`}
@@ -60,13 +61,14 @@ const ClarkCampaignCard = () => {
             position: 'absolute',
             left: `${x}px`,
             top: `${y}px`,
-            width: '25px', // Made stars bigger
-            height: '25px', // Made stars bigger
-            backgroundColor: 'white',
+            width: `${starSize.width}px`,
+            height: `${starSize.height}px`,
+            backgroundColor: selectedElement === `star-${row}-${i}` ? 'rgba(255, 107, 53, 0.1)' : 'white',
             clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
             transform: 'translate(-50%, -50%)',
             zIndex: 2,
             cursor: isEditMode ? 'pointer' : 'default',
+            border: isEditMode ? '2px dashed #ff6b35' : 'none',
           }}
           onClick={(e) => {
             if (isEditMode) {
@@ -74,8 +76,34 @@ const ClarkCampaignCard = () => {
               setSelectedElement(`star-${row}-${i}`);
             }
           }}
-        />
+          onMouseDown={(e) => handleMouseDown(e, `star-${row}-${i}`)}
+        >
+          {/* Resize handle for stars */}
+          {isEditMode && editMode === 'resize' && selectedElement === `star-${row}-${i}` && (
+            <div
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                handleMouseDown(e, `star-${row}-${i}`, true);
+              }}
+              style={{
+                position: 'absolute',
+                bottom: '-15px',
+                right: '-15px',
+                width: '25px',
+                height: '25px',
+                background: '#ff6b35',
+                border: '3px solid white',
+                borderRadius: '50%',
+                cursor: 'nw-resize',
+                zIndex: 10,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+              }}
+            />
+          )}
+        </div>
       );
+
+      stars.push(starElement);
     }
     return stars;
   };
@@ -101,11 +129,25 @@ const ClarkCampaignCard = () => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
 
-    const element = getElementPosition(elementId);
-    if (!element) return;
-
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+
+    // Handle star elements differently
+    if (elementId.startsWith('star-')) {
+      if (editMode === 'resize' && isResizeHandle) {
+        setIsResizing(true);
+        setResizeStart({ x, y, width: starSize.width, height: starSize.height });
+      } else if (editMode === 'move') {
+        // Stars can't be moved individually, only resized
+        setSelectedElement(elementId);
+        return;
+      }
+      setSelectedElement(elementId);
+      return;
+    }
+
+    const element = getElementPosition(elementId);
+    if (!element) return;
 
     if (editMode === 'resize' && isResizeHandle) {
       setIsResizing(true);
@@ -151,14 +193,22 @@ const ClarkCampaignCard = () => {
         top: y - dragOffset.y
       });
     } else if (isResizing && selectedElement && editMode === 'resize') {
-      const element = getElementPosition(selectedElement);
-      if (element) {
-        const newWidth = Math.max(50, resizeStart.width + (x - resizeStart.x));
-        const newHeight = Math.max(20, resizeStart.height + (y - resizeStart.y));
-        updateElementPosition(selectedElement, {
-          width: newWidth,
-          height: newHeight
-        });
+      if (selectedElement.startsWith('star-')) {
+        // Handle star resizing
+        const newWidth = Math.max(10, Math.min(100, resizeStart.width + (x - resizeStart.x)));
+        const newHeight = Math.max(10, Math.min(100, resizeStart.height + (y - resizeStart.y)));
+        setStarSize({ width: newWidth, height: newHeight });
+      } else {
+        // Handle regular element resizing
+        const element = getElementPosition(selectedElement);
+        if (element) {
+          const newWidth = Math.max(50, resizeStart.width + (x - resizeStart.x));
+          const newHeight = Math.max(20, resizeStart.height + (y - resizeStart.y));
+          updateElementPosition(selectedElement, {
+            width: newWidth,
+            height: newHeight
+          });
+        }
       }
     }
   };
@@ -381,44 +431,97 @@ const ClarkCampaignCard = () => {
           </div>
 
           {/* Font Size Controls */}
-          {editMode === 'font' && selectedElement && (
+          {editMode === 'font' && (
             <div style={{ marginBottom: '12px' }}>
-              <div style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>Font Size:</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <button
-                  onClick={() => selectedElement && adjustFontSize(selectedElement, -2)}
-                  style={{
-                    background: '#dc3545',
-                    color: 'white',
-                    border: 'none',
-                    padding: '6px 12px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  -
-                </button>
-                <div style={{ fontSize: '14px', fontWeight: 'bold', minWidth: '50px', textAlign: 'center' }}>
-                  {fontSizes[selectedElement] || 16}px
+              {selectedElement && !selectedElement.startsWith('star-') ? (
+                <>
+                  <div style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>Font Size:</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button
+                      onClick={() => selectedElement && adjustFontSize(selectedElement, -2)}
+                      style={{
+                        background: '#dc3545',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      -
+                    </button>
+                    <div style={{ fontSize: '14px', fontWeight: 'bold', minWidth: '50px', textAlign: 'center' }}>
+                      {fontSizes[selectedElement] || 16}px
+                    </div>
+                    <button
+                      onClick={() => selectedElement && adjustFontSize(selectedElement, 2)}
+                      style={{
+                        background: '#28a745',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </>
+              ) : selectedElement && selectedElement.startsWith('star-') ? (
+                <>
+                  <div style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>Star Size:</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button
+                      onClick={() => setStarSize(prev => ({
+                        width: Math.max(10, prev.width - 5),
+                        height: Math.max(10, prev.height - 5)
+                      }))}
+                      style={{
+                        background: '#dc3545',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      -
+                    </button>
+                    <div style={{ fontSize: '14px', fontWeight: 'bold', minWidth: '80px', textAlign: 'center' }}>
+                      {starSize.width}×{starSize.height}
+                    </div>
+                    <button
+                      onClick={() => setStarSize(prev => ({
+                        width: Math.min(100, prev.width + 5),
+                        height: Math.min(100, prev.height + 5)
+                      }))}
+                      style={{
+                        background: '#28a745',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div style={{ fontSize: '12px', color: '#666', fontStyle: 'italic' }}>
+                  Select an element to adjust its size
                 </div>
-                <button
-                  onClick={() => selectedElement && adjustFontSize(selectedElement, 2)}
-                  style={{
-                    background: '#28a745',
-                    color: 'white',
-                    border: 'none',
-                    padding: '6px 12px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  +
-                </button>
-              </div>
+              )}
             </div>
           )}
 
@@ -626,7 +729,7 @@ const ClarkCampaignCard = () => {
           style={{
             position: 'absolute',
             left: `${clarkPos?.left || 661}px`,
-            top: `${clarkPos?.top || 552}px`,
+            top: `${clarkPos?.top || 653}px`,
             width: `${clarkPos?.width || 1191}px`,
             height: `${clarkPos?.height || 237}px`,
             display: 'flex',
@@ -728,8 +831,8 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'city-council-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${cityPos?.left || 1080}px`,
-            top: `${cityPos?.top || 861}px`,
+            left: `${cityPos?.left || 1060}px`,
+            top: `${cityPos?.top || 941}px`,
             width: `${cityPos?.width || 200}px`,
             height: `${cityPos?.height || 40}px`,
             display: 'flex',
@@ -778,8 +881,8 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'christophe-name' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${namePos?.left || 128}px`,
-            top: `${namePos?.top || 1190}px`,
+            left: `${namePos?.left || 20}px`,
+            top: `${namePos?.top || 1099}px`,
             width: `${namePos?.width || 300}px`,
             height: `${namePos?.height || 40}px`,
             display: 'flex',
@@ -829,8 +932,8 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'description-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${descPos?.left || 816}px`,
-            top: `${descPos?.top || 1122}px`,
+            left: `${descPos?.left || 140}px`,
+            top: `${descPos?.top || 1160}px`,
             width: `${descPos?.width || 800}px`,
             height: `${descPos?.height || 160}px`,
             display: 'flex',
@@ -879,8 +982,8 @@ const ClarkCampaignCard = () => {
           className={`editable-element ${selectedElement === 'contact-text' ? 'selected' : ''}`}
           style={{
             position: 'absolute',
-            left: `${contactPos?.left || 864}px`,
-            top: `${contactPos?.top || 1329}px`,
+            left: `${contactPos?.left || 97}px`,
+            top: `${contactPos?.top || 1327}px`,
             width: `${contactPos?.width || 400}px`,
             height: `${contactPos?.height || 20}px`,
             display: 'flex',
