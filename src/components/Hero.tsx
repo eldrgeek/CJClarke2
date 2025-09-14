@@ -1,5 +1,5 @@
 import React from 'react';
-import YouTubeEmbed from './YouTubeEmbed';
+import YouTubeFacade from './YouTubeFacade';
 
 interface HeroProps {
   image?: string;
@@ -9,9 +9,11 @@ interface HeroProps {
   children?: React.ReactNode;
   videoId?: string;
   videoTitle?: string;
+  autoplay?: boolean;
+  language?: string;
 }
 
-const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children, videoId, videoTitle }) => {
+const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children, videoId, videoTitle, autoplay = false, language = "en" }) => {
   return (
     <div className="relative bg-gradient-to-br from-cj-blue via-cj-blue/90 to-cj-blue/80 text-cj-white overflow-hidden">
       {/* Background Pattern */}
@@ -39,11 +41,12 @@ const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children, video
             {videoId ? (
               <div className="relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                  <YouTubeEmbed 
+                  <YouTubeFacade 
                     videoId={videoId}
-                    autoplay={false}
+                    autoplay={autoplay}
                     title={videoTitle || 'Campaign Video'}
                     className="h-64 sm:h-80 md:h-96"
+                    language={language}
                   />
                 </div>
                 

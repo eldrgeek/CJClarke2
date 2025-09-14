@@ -6,7 +6,12 @@ export interface BaseFrontmatter {
   title: string;
   summary?: string;
   lang?: Lang;
-  hero?: { image?: string; alt?: string };
+  hero?: { 
+    image?: string; 
+    alt?: string;
+    videoId?: string;
+    videoTitle?: string;
+  };
   cta?: {
     primary?: { label: string; href: string };
     secondary?: { label: string; href: string };

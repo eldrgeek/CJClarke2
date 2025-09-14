@@ -50,7 +50,36 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
   const handleNavigation = (href: string, newLang?: string) => {
     // If we're changing language, update the URL accordingly
     if (newLang) {
-      const targetHref = newLang === 'es' ? (href === '/' ? '/es' : href) : href;
+      let targetHref = href;
+      
+      if (newLang === 'es') {
+        // Converting to Spanish
+        if (href === '/') {
+          targetHref = '/es';
+        } else {
+          // Find the Spanish equivalent from navItems
+          const navItem = navItems.find(item => item.href === href);
+          targetHref = navItem?.hrefEs || href;
+        }
+      } else {
+        // Converting to English
+        if (href === '/es') {
+          targetHref = '/';
+        } else {
+          // Find the English equivalent from navItems
+          const navItem = navItems.find(item => item.hrefEs === href);
+          if (navItem) {
+            targetHref = navItem.href;
+          } else if (href.endsWith('-es')) {
+            // Fallback: Remove the -es suffix for routes not in navItems
+            targetHref = href.replace('-es', '');
+          } else {
+            // Route doesn't have a Spanish version (like /video), keep as is
+            targetHref = href;
+          }
+        }
+      }
+      
       updateLanguage(newLang);
       window.location.href = targetHref;
     } else {

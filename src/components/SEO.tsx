@@ -12,6 +12,27 @@ const SEO: React.FC<SEOProps> = ({ frontmatter, baseUrl = 'https://example.org' 
   const seoImage = frontmatter.seo?.image || frontmatter.hero?.image || `${baseUrl}/og-default.jpg`;
   
   React.useEffect(() => {
+    // Add preconnect links for performance
+    const preconnectUrls = [
+      'https://www.youtube.com',
+      'https://i.ytimg.com',
+      'https://fonts.googleapis.com',
+      'https://fonts.gstatic.com'
+    ];
+    
+    preconnectUrls.forEach(url => {
+      let link = document.querySelector(`link[rel="preconnect"][href="${url}"]`);
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'preconnect');
+        link.setAttribute('href', url);
+        if (url.includes('fonts.gstatic.com')) {
+          link.setAttribute('crossorigin', '');
+        }
+        document.head.appendChild(link);
+      }
+    });
+
     // Set document title with language-specific suffix
     const isSpanish = frontmatter.lang === 'es';
     const titleSuffix = isSpanish

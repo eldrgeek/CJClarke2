@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Layout from './components/Layout';
 import Hero from './components/Hero';
 import CTAButtons from './components/CTAButtons';
 import ContentRenderer from './components/ContentRenderer';
-import IssueCard from './components/IssueCard';
-import NewsCard from './components/NewsCard';
 import SEO from './components/SEO';
-import YouTubeEmbed from './components/YouTubeEmbed';
+
+// Lazy load components to reduce initial bundle size
+const IssueCard = React.lazy(() => import('./components/IssueCard'));
+const NewsCard = React.lazy(() => import('./components/NewsCard'));
 import { loadSite, resolveRoute } from './lib/content';
 import type { SiteIndex, RouteResult } from './types';
 import { ArrowLeft, Users, Target, Heart, Building2, CheckCircle2 } from 'lucide-react';
@@ -70,38 +71,6 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [site]);
 
-  // Lazy load components based on route
-  const loadComponent = async (path: string) => {
-    switch (path) {
-      case '/issues':
-        return (await import('./components/IssueCard')).default;
-      case '/news':
-        return (await import('./components/NewsCard')).default;
-      case '/get-involved':
-        // No specific component to load, using default layout
-        return null;
-      case '/donate':
-        // No specific component to load, using default layout
-        return null;
-      case '/':
-        return (await import('./components/IssueCard')).default; // For home page key priorities
-      default:
-        // Check for custom components in frontmatter
-        if (currentRoute && currentRoute.kind !== 'notfound' && currentRoute.doc.fm.component) {
-          const componentName = currentRoute.doc.fm.component;
-          try {
-            return (await import(`./components/${componentName}.tsx`)).default;
-          } catch (error) {
-            console.error(`Failed to load component ${componentName}:`, error);
-            return null;
-          }
-        }
-        return null;
-    }
-  };
-
-  // Removed DynamicComponent logic as it was causing null props issues
-
   // Show loading screen if still loading or if data isn't ready
   if (isLoading || !site || !currentRoute) {
     if (showLoading) {
@@ -150,8 +119,10 @@ function App() {
         alt={doc.fm.hero?.alt}
         title={doc.fm.title}
         summary={doc.fm.summary}
-        videoId={currentPath === '/' ? 'WzqnAeOxoZY' : undefined}
-        videoTitle={currentPath === '/' ? 'CJ Clark Campaign Video' : undefined}
+        videoId={currentPath === '/' ? 'WzqnAeOxoZY' : doc.fm.hero?.videoId}
+        videoTitle={currentPath === '/' ? 'CJ Clark Campaign Video' : doc.fm.hero?.videoTitle}
+        autoplay={currentPath === '/video'}
+        language={getPreferredLanguage()}
       >
         <CTAButtons primary={doc.fm.cta?.primary} secondary={doc.fm.cta?.secondary} />
       </Hero>
@@ -164,31 +135,31 @@ function App() {
             <ContentRenderer html={doc.html} />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {site?.issues?.filter(issue => 
-                issue != null && 
-                issue.fm != null && 
-                issue.fm.slug && 
-                typeof issue.fm.slug === 'string' &&
-                issue.fm.title
-              ).map((issue) => (
-                <IssueCard key={issue.fm.slug} issue={issue} />
-              )) || []}
+              <Suspense fallback={<div className="animate-pulse bg-gray-200 h-64 rounded-xl"></div>}>
+                {site?.issues?.filter(issue => 
+                  issue != null && 
+                  issue.fm != null && 
+                  issue.fm.slug && 
+                  typeof issue.fm.slug === 'string' &&
+                  issue.fm.title
+                ).map((issue) => (
+                  <IssueCard key={issue.fm.slug} issue={issue} />
+                )) || []}
+              </Suspense>
             </div>
           </div>
         )}
 
         {currentRoute.kind === 'page' && currentPath === '/news' && (
           <div className="space-y-12">
-            {(() => {
-              console.log('News page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
-              return null;
-            })()}
             <ContentRenderer html={doc.html} />
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {site.news.map((newsItem) => (
-                <NewsCard key={`${newsItem.fm.date}-${newsItem.fm.slug}`} newsItem={newsItem} />
-              ))}
+              <Suspense fallback={<div className="animate-pulse bg-gray-200 h-48 rounded-xl"></div>}>
+                {site.news.map((newsItem) => (
+                  <NewsCard key={`${newsItem.fm.date}-${newsItem.fm.slug}`} newsItem={newsItem} />
+                ))}
+              </Suspense>
             </div>
           </div>
         )}
@@ -196,10 +167,6 @@ function App() {
         {currentRoute.kind === 'page' && currentPath === '/' && (
           <div className="space-y-16">
             {/* Main content */}
-            {(() => {
-              // console.log('Home page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
-              return null;
-            })()}
             <ContentRenderer html={doc.html} />
             
             {/* Features section */}
@@ -234,15 +201,17 @@ function App() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Key Priorities</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {site?.issues?.filter(issue => 
-                  issue != null && 
-                  issue.fm != null && 
-                  issue.fm.slug && 
-                  typeof issue.fm.slug === 'string' &&
-                  issue.fm.title
-                ).slice(0, 4).map((issue) => (
-                  <IssueCard key={issue.fm.slug} issue={issue} />
-                )) || []}
+                <Suspense fallback={<div className="animate-pulse bg-gray-200 h-64 rounded-xl"></div>}>
+                  {site?.issues?.filter(issue => 
+                    issue != null && 
+                    issue.fm != null && 
+                    issue.fm.slug && 
+                    typeof issue.fm.slug === 'string' &&
+                    issue.fm.title
+                  ).slice(0, 4).map((issue) => (
+                    <IssueCard key={issue.fm.slug} issue={issue} />
+                  )) || []}
+                </Suspense>
               </div>
               <div className="text-center mt-12">
                 <button
@@ -366,30 +335,9 @@ function App() {
           </div>
         )}
 
-        {currentRoute.kind === 'page' && currentPath === '/video' && (
-          <div className="space-y-12">
-            <ContentRenderer html={doc.html} />
-            
-            {/* YouTube Video Player */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-              <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">CJ Clark's Campaign Message</h3>
-              <YouTubeEmbed 
-                videoId="WzqnAeOxoZY" 
-                autoplay={true}
-                title="CJ Clark Campaign Video"
-                className="max-w-4xl mx-auto"
-              />
-            </div>
-          </div>
-        )}
-
         {/* Default content renderer for other pages */}
-        {!(currentPath === '/issues' || currentPath === '/news' || currentPath === '/' || currentPath === '/get-involved' || currentPath === '/donate' || currentPath === '/video') && (
+        {!(currentPath === '/issues' || currentPath === '/news' || currentPath === '/' || currentPath === '/get-involved' || currentPath === '/donate') && (
           <>
-            {(() => {
-              // console.log('Default page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
-              return null;
-            })()}
             {/* Check for component field in frontmatter */}
             {doc.fm.component ? (
               (() => {

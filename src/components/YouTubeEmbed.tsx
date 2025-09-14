@@ -5,16 +5,31 @@ interface YouTubeEmbedProps {
   autoplay?: boolean;
   title?: string;
   className?: string;
+  language?: string;
 }
 
 const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ 
   videoId, 
   autoplay = false, 
   title = "YouTube video player",
-  className = ""
+  className = "",
+  language = "en"
 }) => {
-  // Convert YouTube URL to embed format
-  const embedUrl = `https://www.youtube.com/embed/${videoId}${autoplay ? '?autoplay=1&mute=1' : ''}`;
+  // Convert YouTube URL to embed format with language support for captions
+  const params = new URLSearchParams();
+  if (autoplay) {
+    params.append('autoplay', '1');
+    params.append('mute', '1');
+  }
+  // Add language parameters for Spanish subtitles
+  if (language === 'es') {
+    params.append('cc_lang_pref', 'es');
+    params.append('cc_load_policy', '1'); // Force captions to be shown
+    params.append('hl', 'es'); // Interface language
+  }
+  
+  const queryString = params.toString();
+  const embedUrl = `https://www.youtube.com/embed/${videoId}${queryString ? `?${queryString}` : ''}`;
 
   return (
     <div className={`relative w-full ${className}`}>

@@ -4,8 +4,8 @@ slug: "/video"
 title: "CJ Clark - Campaign Video"
 summary: "Watch CJ Clark's campaign message and learn about his vision for Sheridan."
 hero:
-  image: ""
-  alt: ""
+  videoId: "WzqnAeOxoZY"
+  videoTitle: "CJ Clark Campaign Video"
 seo:
   title: "CJ Clark Campaign Video - A Healthier, Safer Sheridan"
   description: "Watch CJ Clark's campaign video and learn about his vision for a healthier, safer Sheridan. Veteran, community leader, and champion for positive change."
