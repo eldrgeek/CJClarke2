@@ -6,7 +6,15 @@ interface IssueCardProps {
   issue: PageDoc<IssueFrontmatter>;
 }
 
-const IssueCard: React.FC<IssueCardProps> = ({ issue }) => {
+const IssueCard: React.FC<IssueCardProps> = (props) => {
+  // Defensive check to prevent null/undefined errors
+  if (!props || !props.issue || !props.issue.fm || !props.issue.fm.slug) {
+    console.error('IssueCard received invalid props:', props);
+    return null;
+  }
+  
+  const { issue } = props;
+
   const handleClick = () => {
     window.location.href = `/issues/${issue.fm.slug}`;
   };

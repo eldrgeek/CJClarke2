@@ -1,4 +1,5 @@
 import React from 'react';
+import YouTubeEmbed from './YouTubeEmbed';
 
 interface HeroProps {
   image?: string;
@@ -6,9 +7,11 @@ interface HeroProps {
   title: string;
   summary?: string;
   children?: React.ReactNode;
+  videoId?: string;
+  videoTitle?: string;
 }
 
-const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children }) => {
+const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children, videoId, videoTitle }) => {
   return (
     <div className="relative bg-gradient-to-br from-cj-blue via-cj-blue/90 to-cj-blue/80 text-cj-white overflow-hidden">
       {/* Background Pattern */}
@@ -32,15 +35,30 @@ const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children }) => 
               {children}
             </div>
 
-            {/* Image */}
-            {image && (
+            {/* Video or Image */}
+            {videoId ? (
+              <div className="relative">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                  <YouTubeEmbed 
+                    videoId={videoId}
+                    autoplay={false}
+                    title={videoTitle || 'Campaign Video'}
+                    className="h-64 sm:h-80 md:h-96"
+                  />
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-cj-red/20 rounded-full blur-xl"></div>
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-cj-blue/20 rounded-full blur-xl"></div>
+              </div>
+            ) : image && (
               <div className="relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
                   <img
                     src={image}
-                    alt={alt || title}
-                    className="w-full h-96 lg:h-[500px] object-cover"
-                    loading="eager"
+                    alt={alt || 'Hero image'}
+                    loading="lazy"
+                    className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl shadow-lg"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 </div>

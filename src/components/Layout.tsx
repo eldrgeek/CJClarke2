@@ -40,6 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, lang = 'en' }) =
     { label: 'Home', href: '/', hrefEs: '/es', labelEs: 'Inicio' },
     { label: 'Meet CJ', href: '/meet', hrefEs: '/meet-es', labelEs: 'Conoce a CJ' },
     { label: 'Issues', href: '/issues', hrefEs: '/issues-es', labelEs: 'Temas' },
+    { label: 'Video', href: '/video', hrefEs: '/video', labelEs: 'Video' },
     { label: 'News', href: '/news', hrefEs: '/news-es', labelEs: 'Noticias' },
     { label: 'Get Involved', href: '/get-involved', hrefEs: '/get-involved-es', labelEs: 'Participa' },
   ];

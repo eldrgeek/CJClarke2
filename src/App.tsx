@@ -6,6 +6,7 @@ import ContentRenderer from './components/ContentRenderer';
 import IssueCard from './components/IssueCard';
 import NewsCard from './components/NewsCard';
 import SEO from './components/SEO';
+import YouTubeEmbed from './components/YouTubeEmbed';
 import { loadSite, resolveRoute } from './lib/content';
 import type { SiteIndex, RouteResult } from './types';
 import { ArrowLeft, Users, Target, Heart, Building2, CheckCircle2 } from 'lucide-react';
@@ -14,6 +15,7 @@ function App() {
   const [site, setSite] = useState<SiteIndex | null>(null);
   const [currentRoute, setCurrentRoute] = useState<RouteResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   // Get preferred language from localStorage
@@ -41,7 +43,17 @@ function App() {
       }
     };
 
+    // Set a timeout to show loading spinner only if loading takes longer than 300ms
+    const loadingTimer = setTimeout(() => {
+      setShowLoading(true);
+    }, 300);
+
     initSite();
+
+    return () => {
+      clearTimeout(loadingTimer);
+      setShowLoading(false);
+    };
   }, [currentPath]);
 
   // Handle browser navigation
@@ -58,18 +70,55 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [site]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Heart className="h-12 w-12 text-blue-600 mx-auto mb-4 animate-pulse" />
-          <p className="text-lg text-gray-600">Loading...</p>
+  // Lazy load components based on route
+  const loadComponent = async (path: string) => {
+    switch (path) {
+      case '/issues':
+        return (await import('./components/IssueCard')).default;
+      case '/news':
+        return (await import('./components/NewsCard')).default;
+      case '/get-involved':
+        // No specific component to load, using default layout
+        return null;
+      case '/donate':
+        // No specific component to load, using default layout
+        return null;
+      case '/':
+        return (await import('./components/IssueCard')).default; // For home page key priorities
+      default:
+        // Check for custom components in frontmatter
+        if (currentRoute && currentRoute.kind !== 'notfound' && currentRoute.doc.fm.component) {
+          const componentName = currentRoute.doc.fm.component;
+          try {
+            return (await import(`./components/${componentName}.tsx`)).default;
+          } catch (error) {
+            console.error(`Failed to load component ${componentName}:`, error);
+            return null;
+          }
+        }
+        return null;
+    }
+  };
+
+  // Removed DynamicComponent logic as it was causing null props issues
+
+  // Show loading screen if still loading or if data isn't ready
+  if (isLoading || !site || !currentRoute) {
+    if (showLoading) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <Heart className="h-12 w-12 text-blue-600 mx-auto mb-4 animate-pulse" />
+            <p className="text-lg text-gray-600">Loading...</p>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    // Return null if loading but not showing loading screen yet
+    return null;
   }
 
-  if (!site || !currentRoute || currentRoute.kind === "notfound") {
+  if (currentRoute.kind === "notfound") {
     return (
       <Layout currentPath={currentPath}>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -97,10 +146,12 @@ function App() {
       
       {/* Hero Section */}
       <Hero
-        image={doc.fm.hero?.image}
+        image={currentPath === '/' ? undefined : doc.fm.hero?.image}
         alt={doc.fm.hero?.alt}
         title={doc.fm.title}
         summary={doc.fm.summary}
+        videoId={currentPath === '/' ? 'WzqnAeOxoZY' : undefined}
+        videoTitle={currentPath === '/' ? 'CJ Clark Campaign Video' : undefined}
       >
         <CTAButtons primary={doc.fm.cta?.primary} secondary={doc.fm.cta?.secondary} />
       </Hero>
@@ -110,16 +161,18 @@ function App() {
         {/* Special handling for different page types */}
         {currentRoute.kind === 'page' && currentPath === '/issues' && (
           <div className="space-y-12">
-            {(() => {
-              console.log('Issues page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
-              return null;
-            })()}
             <ContentRenderer html={doc.html} />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {site.issues.map((issue) => (
+              {site?.issues?.filter(issue => 
+                issue != null && 
+                issue.fm != null && 
+                issue.fm.slug && 
+                typeof issue.fm.slug === 'string' &&
+                issue.fm.title
+              ).map((issue) => (
                 <IssueCard key={issue.fm.slug} issue={issue} />
-              ))}
+              )) || []}
             </div>
           </div>
         )}
@@ -144,7 +197,7 @@ function App() {
           <div className="space-y-16">
             {/* Main content */}
             {(() => {
-              console.log('Home page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
+              // console.log('Home page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
               return null;
             })()}
             <ContentRenderer html={doc.html} />
@@ -181,9 +234,15 @@ function App() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Key Priorities</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {site.issues.slice(0, 4).map((issue) => (
+                {site?.issues?.filter(issue => 
+                  issue != null && 
+                  issue.fm != null && 
+                  issue.fm.slug && 
+                  typeof issue.fm.slug === 'string' &&
+                  issue.fm.title
+                ).slice(0, 4).map((issue) => (
                   <IssueCard key={issue.fm.slug} issue={issue} />
-                ))}
+                )) || []}
               </div>
               <div className="text-center mt-12">
                 <button
@@ -307,11 +366,28 @@ function App() {
           </div>
         )}
 
+        {currentRoute.kind === 'page' && currentPath === '/video' && (
+          <div className="space-y-12">
+            <ContentRenderer html={doc.html} />
+            
+            {/* YouTube Video Player */}
+            <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">CJ Clark's Campaign Message</h3>
+              <YouTubeEmbed 
+                videoId="WzqnAeOxoZY" 
+                autoplay={true}
+                title="CJ Clark Campaign Video"
+                className="max-w-4xl mx-auto"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Default content renderer for other pages */}
-        {!(currentPath === '/issues' || currentPath === '/news' || currentPath === '/' || currentPath === '/get-involved' || currentPath === '/donate') && (
+        {!(currentPath === '/issues' || currentPath === '/news' || currentPath === '/' || currentPath === '/get-involved' || currentPath === '/donate' || currentPath === '/video') && (
           <>
             {(() => {
-              console.log('Default page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
+              // console.log('Default page - HTML passed to ContentRenderer:', doc.html, 'Type:', typeof doc.html);
               return null;
             })()}
             {/* Check for component field in frontmatter */}
