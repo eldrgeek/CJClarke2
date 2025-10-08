@@ -40,7 +40,7 @@ const Hero: React.FC<HeroProps> = ({ image, alt, title, summary, children, video
             {/* Video or Image */}
             {videoId ? (
               <div className="relative">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                   <YouTubeFacade 
                     videoId={videoId}
                     autoplay={autoplay}

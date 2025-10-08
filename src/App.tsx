@@ -119,7 +119,7 @@ function App() {
         alt={doc.fm.hero?.alt}
         title={doc.fm.title}
         summary={doc.fm.summary}
-        videoId={currentPath === '/' ? 'WzqnAeOxoZY' : doc.fm.hero?.videoId}
+        videoId={currentPath === '/' ? 'HKweRXF4Yho' : doc.fm.hero?.videoId}
         videoTitle={currentPath === '/' ? 'CJ Clark Campaign Video' : doc.fm.hero?.videoTitle}
         autoplay={currentPath === '/video'}
         language={getPreferredLanguage()}
