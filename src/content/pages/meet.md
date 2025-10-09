@@ -4,8 +4,8 @@ slug: "/meet"
 title: "Meet Christophe James Clark"
 summary: "U.S. Army veteran, world champion athlete, and dedicated community leader."
 hero:
-  image: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
-  alt: "CJ Clark teaching a youth class at his dojo"
+  videoId: "qUOemUzW2h0"
+  videoTitle: "Q&A with CJ Clark - Learn About His Vision for Sheridan"
 cta:
   primary:
     label: "Get Involved"

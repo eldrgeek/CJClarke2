@@ -104,8 +104,8 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({
               overlayShownRef.current = false;
             }
             
-            // Show overlay between 16.5 and 21 seconds (at 17 seconds)
-            if (currentTime >= 16.5 && currentTime <= 21 && !overlayShownRef.current) {
+            // Show overlay between 16.5 and 21 seconds (at 17 seconds) - ONLY for campaign video
+            if (currentTime >= 16.5 && currentTime <= 21 && !overlayShownRef.current && videoId === 'rkbzBksGn2o') {
               setShowDateOverlay(true);
               overlayShownRef.current = true;
               

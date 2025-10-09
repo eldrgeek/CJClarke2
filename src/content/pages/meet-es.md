@@ -5,8 +5,8 @@ title: "Conoce a Christophe James Clark"
 lang: "es"
 summary: "Veterano del ejército estadounidense, atleta campeón mundial y líder comunitario dedicado."
 hero:
-  image: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
-  alt: "CJ Clark enseñando una clase de jóvenes en su dojo"
+  videoId: "qUOemUzW2h0"
+  videoTitle: "Preguntas y Respuestas con CJ Clark - Conoce Su Visión para Sheridan"
 cta:
   primary:
     label: "Participa"
