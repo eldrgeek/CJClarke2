@@ -18,6 +18,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [customAmount, setCustomAmount] = useState<string>('');
 
   // Get preferred language from localStorage
   const getPreferredLanguage = (): string => {
@@ -300,7 +302,16 @@ function App() {
                 {[25, 50, 100, 250].map((amount) => (
                   <button
                     key={amount}
-                    className="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-blue-600 hover:bg-blue-50 transition-colors"
+                    onClick={() => {
+                      setSelectedAmount(amount);
+                      setCustomAmount('');
+                      window.open(`https://www.zeffy.com/en-US/donation-form/donate-for-good-government?amount=${amount}`, '_blank');
+                    }}
+                    className={`p-4 border-2 rounded-lg text-center transition-all transform hover:scale-105 ${
+                      selectedAmount === amount 
+                        ? 'border-blue-600 bg-blue-50' 
+                        : 'border-gray-200 hover:border-blue-600 hover:bg-blue-50'
+                    }`}
                   >
                     <span className="text-2xl font-bold text-gray-900">${amount}</span>
                   </button>
@@ -319,12 +330,28 @@ function App() {
               
               <div className="space-y-4">
                 <input
-                  type="text"
+                  type="number"
+                  min="1"
+                  step="1"
                   placeholder="Custom Amount"
+                  value={customAmount}
+                  onChange={(e) => {
+                    setCustomAmount(e.target.value);
+                    setSelectedAmount(null);
+                  }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-                <button className="w-full bg-red-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors transform hover:scale-105">
-                  Donate Securely
+                <button 
+                  onClick={() => {
+                    const amount = customAmount ? parseFloat(customAmount) : selectedAmount;
+                    const url = amount 
+                      ? `https://www.zeffy.com/en-US/donation-form/donate-for-good-government?amount=${amount}`
+                      : 'https://www.zeffy.com/en-US/donation-form/donate-for-good-government';
+                    window.open(url, '_blank');
+                  }}
+                  className="w-full bg-red-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  Donate Securely via Zeffy
                 </button>
               </div>
               
@@ -423,7 +450,7 @@ function App() {
                   Get Involved
                 </button>
                 <button
-                  onClick={() => window.location.href = '/donate'}
+                  onClick={() => window.open('https://www.zeffy.com/en-US/donation-form/donate-for-good-government', '_blank')}
                   className="px-6 py-3 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-colors"
                 >
                   Donate
