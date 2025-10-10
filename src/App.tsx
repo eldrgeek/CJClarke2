@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import CTAButtons from './components/CTAButtons';
 import ContentRenderer from './components/ContentRenderer';
 import SEO from './components/SEO';
+import YouTubeFacade from './components/YouTubeFacade';
 
 // Lazy load components to reduce initial bundle size
 const IssueCard = React.lazy(() => import('./components/IssueCard'));
@@ -128,6 +129,33 @@ function App() {
       >
         <CTAButtons primary={doc.fm.cta?.primary} secondary={doc.fm.cta?.secondary} />
       </Hero>
+
+      {/* Q&A Video Section - Only on Home Page */}
+      {currentPath === '/' && (
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">
+              Q&A with CJ
+            </h2>
+            <div className="relative">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <Suspense fallback={
+                  <div className="aspect-video bg-gray-200 animate-pulse rounded-2xl flex items-center justify-center">
+                    <div className="text-gray-400">Loading video...</div>
+                  </div>
+                }>
+                  <YouTubeFacade 
+                    videoId="qUOemUzW2h0"
+                    title="Q&A with CJ Clark - Learn About His Vision for Sheridan"
+                    className="rounded-2xl"
+                    language={getPreferredLanguage()}
+                  />
+                </Suspense>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
