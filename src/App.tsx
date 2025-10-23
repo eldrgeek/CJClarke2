@@ -5,10 +5,12 @@ import CTAButtons from './components/CTAButtons';
 import ContentRenderer from './components/ContentRenderer';
 import SEO from './components/SEO';
 import YouTubeFacade from './components/YouTubeFacade';
+import AnalyticsTracker, { initGA4 } from './components/AnalyticsTracker';
 
 // Lazy load components to reduce initial bundle size
 const IssueCard = React.lazy(() => import('./components/IssueCard'));
 const NewsCard = React.lazy(() => import('./components/NewsCard'));
+const AdminDashboard = React.lazy(() => import('./components/AdminDashboard'));
 import { loadSite, resolveRoute } from './lib/content';
 import type { SiteIndex, RouteResult } from './types';
 import { ArrowLeft, Users, Target, Heart, Building2, CheckCircle2 } from 'lucide-react';
@@ -52,6 +54,9 @@ function App() {
       setShowLoading(true);
     }, 300);
 
+    // Initialize Google Analytics 4
+    initGA4();
+
     initSite();
 
     return () => {
@@ -73,6 +78,22 @@ function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, [site]);
+
+  // Handle admin route separately (doesn't need site data)
+  if (currentPath === '/admin') {
+    return (
+      <Suspense fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <Heart className="h-12 w-12 text-blue-600 mx-auto mb-4 animate-pulse" />
+            <p className="text-lg text-gray-600">Loading admin panel...</p>
+          </div>
+        </div>
+      }>
+        <AdminDashboard />
+      </Suspense>
+    );
+  }
 
   // Show loading screen if still loading or if data isn't ready
   if (isLoading || !site || !currentRoute) {
@@ -115,6 +136,7 @@ function App() {
   return (
     <Layout currentPath={currentPath} lang={doc.fm.lang}>
       <SEO frontmatter={doc.fm} />
+      <AnalyticsTracker currentPath={currentPath} />
       
       {/* Hero Section */}
       <Hero
