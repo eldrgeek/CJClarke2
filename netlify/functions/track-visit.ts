@@ -15,6 +15,7 @@ const DATA_KEY = 'visit-analytics';
 
 async function loadAnalyticsData(): Promise<VisitData> {
   try {
+    console.log('Loading analytics data from Blobs store:', STORE_NAME, 'key:', DATA_KEY);
     const data = await getBlob({
       store: STORE_NAME,
       key: DATA_KEY,
@@ -22,10 +23,15 @@ async function loadAnalyticsData(): Promise<VisitData> {
     
     if (data) {
       const text = await data.text();
-      return JSON.parse(text);
+      const parsed = JSON.parse(text);
+      console.log('Successfully loaded analytics data:', parsed);
+      return parsed;
+    } else {
+      console.log('No existing analytics data found, starting fresh');
     }
   } catch (error) {
-    console.log('No existing analytics data found, starting fresh');
+    console.error('Error loading analytics data:', error);
+    console.log('Starting with fresh data due to error');
   }
   
   // Return default data structure
@@ -40,11 +46,16 @@ async function loadAnalyticsData(): Promise<VisitData> {
 
 async function saveAnalyticsData(data: VisitData): Promise<void> {
   try {
+    console.log('Saving analytics data to Blobs store:', STORE_NAME, 'key:', DATA_KEY);
+    console.log('Data to save:', data);
+    
     await putBlob({
       store: STORE_NAME,
       key: DATA_KEY,
       data: JSON.stringify(data),
     });
+    
+    console.log('Successfully saved analytics data');
   } catch (error) {
     console.error('Failed to save analytics data:', error);
     throw error;
@@ -66,10 +77,13 @@ export const handler: Handler = async (event) => {
 
   if (event.httpMethod === 'POST') {
     try {
+      console.log('Track visit request received:', event.body);
       const { page, visitorId } = JSON.parse(event.body || '{}');
+      console.log('Parsed request - page:', page, 'visitorId:', visitorId);
       
       // Load current data from persistent storage
       const analyticsData = await loadAnalyticsData();
+      console.log('Loaded analytics data:', analyticsData);
 
       // Increment total visits
       analyticsData.totalVisits++;
