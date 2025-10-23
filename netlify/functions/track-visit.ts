@@ -1,4 +1,5 @@
 import { Handler } from '@netlify/functions';
+import { getBlob, putBlob } from '@netlify/blobs';
 
 interface VisitData {
   totalVisits: number;
@@ -8,27 +9,46 @@ interface VisitData {
   visitors: { [key: string]: { count: number; lastSeen: string; pages: string[] } };
 }
 
-// Simple in-memory store for local development
-// In production, this will be replaced with persistent storage
-let analyticsStore: VisitData = {
-  totalVisits: 0,
-  uniqueVisits: 0,
-  pageViews: {},
-  lastVisit: new Date().toISOString(),
-  visitors: {}
-};
+// Persistent storage using Netlify Blobs
+const STORE_NAME = 'analytics-data';
+const DATA_KEY = 'visit-analytics';
 
-// For production, we'll use Netlify Blobs
 async function loadAnalyticsData(): Promise<VisitData> {
-  // In production, this would load from Netlify Blobs
-  // For now, return the in-memory store
-  return analyticsStore;
+  try {
+    const data = await getBlob({
+      store: STORE_NAME,
+      key: DATA_KEY,
+    });
+    
+    if (data) {
+      const text = await data.text();
+      return JSON.parse(text);
+    }
+  } catch (error) {
+    console.log('No existing analytics data found, starting fresh');
+  }
+  
+  // Return default data structure
+  return {
+    totalVisits: 0,
+    uniqueVisits: 0,
+    pageViews: {},
+    lastVisit: new Date().toISOString(),
+    visitors: {}
+  };
 }
 
 async function saveAnalyticsData(data: VisitData): Promise<void> {
-  // In production, this would save to Netlify Blobs
-  // For now, update the in-memory store
-  analyticsStore = data;
+  try {
+    await putBlob({
+      store: STORE_NAME,
+      key: DATA_KEY,
+      data: JSON.stringify(data),
+    });
+  } catch (error) {
+    console.error('Failed to save analytics data:', error);
+    throw error;
+  }
 }
 
 export const handler: Handler = async (event) => {

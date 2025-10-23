@@ -90,6 +90,7 @@ function App() {
           </div>
         </div>
       }>
+        <AnalyticsTracker currentPath={currentPath} />
         <AdminDashboard />
       </Suspense>
     );
