@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { getBlob, putBlob } from '@netlify/blobs';
+import { getStore } from '@netlify/blobs';
 
 interface VisitData {
   totalVisits: number;
@@ -16,14 +16,11 @@ const DATA_KEY = 'visit-analytics';
 async function loadAnalyticsData(): Promise<VisitData> {
   try {
     console.log('Loading analytics data from Blobs store:', STORE_NAME, 'key:', DATA_KEY);
-    const data = await getBlob({
-      store: STORE_NAME,
-      key: DATA_KEY,
-    });
+    const store = getStore(STORE_NAME);
+    const data = await store.get(DATA_KEY);
     
     if (data) {
-      const text = await data.text();
-      const parsed = JSON.parse(text);
+      const parsed = JSON.parse(data);
       console.log('Successfully loaded analytics data:', parsed);
       return parsed;
     } else {
@@ -49,11 +46,8 @@ async function saveAnalyticsData(data: VisitData): Promise<void> {
     console.log('Saving analytics data to Blobs store:', STORE_NAME, 'key:', DATA_KEY);
     console.log('Data to save:', data);
     
-    await putBlob({
-      store: STORE_NAME,
-      key: DATA_KEY,
-      data: JSON.stringify(data),
-    });
+    const store = getStore(STORE_NAME);
+    await store.set(DATA_KEY, JSON.stringify(data));
     
     console.log('Successfully saved analytics data');
   } catch (error) {

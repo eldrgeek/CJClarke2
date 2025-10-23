@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { getBlob } from '@netlify/blobs';
+import { getStore } from '@netlify/blobs';
 
 interface VisitData {
   totalVisits: number;
@@ -15,17 +15,20 @@ const DATA_KEY = 'visit-analytics';
 
 async function loadAnalyticsData(): Promise<VisitData> {
   try {
-    const data = await getBlob({
-      store: STORE_NAME,
-      key: DATA_KEY,
-    });
+    console.log('Loading analytics data from Blobs store:', STORE_NAME, 'key:', DATA_KEY);
+    const store = getStore(STORE_NAME);
+    const data = await store.get(DATA_KEY);
     
     if (data) {
-      const text = await data.text();
-      return JSON.parse(text);
+      const parsed = JSON.parse(data);
+      console.log('Successfully loaded analytics data:', parsed);
+      return parsed;
+    } else {
+      console.log('No existing analytics data found, starting fresh');
     }
   } catch (error) {
-    console.log('No existing analytics data found, starting fresh');
+    console.error('Error loading analytics data:', error);
+    console.log('Starting with fresh data due to error');
   }
   
   // Return default data structure
